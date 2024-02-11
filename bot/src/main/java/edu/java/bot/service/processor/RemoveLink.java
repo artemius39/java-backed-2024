@@ -4,10 +4,14 @@ import edu.java.bot.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RemoveLink implements MessageProcessor {
+public class RemoveLink extends BaseMessageProcessor {
     @Override
-    public String process(String link, User user) {
-        assert user.getState() == User.State.WAITING_FOR_LINK_TO_REMOVE;
+    protected User.State supportedState() {
+        return User.State.WAITING_FOR_LINK_TO_REMOVE;
+    }
+
+    @Override
+    protected String processImpl(String link, User user) {
         if (link.equals("Отмена")) {
             user.setState(User.State.WAITING_FOR_COMMAND);
             return "Операция отменена";

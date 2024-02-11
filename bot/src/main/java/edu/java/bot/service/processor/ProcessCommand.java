@@ -11,7 +11,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProcessCommand implements MessageProcessor {
+public class ProcessCommand extends BaseMessageProcessor {
 
     private final Map<String, CommandProcessor> commandProcessors;
 
@@ -26,8 +26,12 @@ public class ProcessCommand implements MessageProcessor {
     }
 
     @Override
-    public String process(String command, User user) {
-        assert user.getState() == User.State.WAITING_FOR_COMMAND;
+    protected User.State supportedState() {
+        return User.State.WAITING_FOR_COMMAND;
+    }
+
+    @Override
+    protected String processImpl(String command, User user) {
         CommandProcessor commandProcessor = commandProcessors.get(command);
         if (commandProcessor == null) {
             return "Неизвестная команда. Введите /help, чтобы увидеть список доступных команд";
