@@ -1,9 +1,9 @@
 package edu.java.bot.repository;
 
+import edu.java.bot.model.User;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import edu.java.bot.model.User;
 
 public class InMemoryUserRepository implements UserRepository {
     private final Map<Long, User> users;

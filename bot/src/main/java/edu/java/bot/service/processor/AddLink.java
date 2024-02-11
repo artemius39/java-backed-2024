@@ -12,14 +12,15 @@ public class AddLink extends BaseMessageProcessor {
 
     @Override
     protected String processImpl(String link, User user) {
-        user.setState(User.State.WAITING_FOR_COMMAND);
+        String response;
         if (link.equals("Отмена")) {
-            return "Операция отменена";
-        }
-        if (user.addLink(link)) {
-            return "Ссылка добавлена в отслеживание";
+            response = "Операция отменена";
+        } else if (user.addLink(link)) {
+            response = "Ссылка добавлена в отслеживание";
         } else {
-            return "Вы уже отслеживаете эту ссылку";
+            response = "Вы уже отслеживаете эту ссылку";
         }
+        user.setState(User.State.WAITING_FOR_COMMAND);
+        return response;
     }
 }

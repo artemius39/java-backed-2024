@@ -1,7 +1,7 @@
 package edu.java.bot.service.processor.command;
 
-import java.util.Set;
 import edu.java.bot.model.User;
+import java.util.Set;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -5,12 +5,12 @@ import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.model.User;
 import edu.java.bot.repository.InMemoryUserRepository;
 import edu.java.bot.repository.UserRepository;
-import java.util.HashSet;
-import java.util.Map;
 import edu.java.bot.service.processor.AddLink;
 import edu.java.bot.service.processor.MessageProcessor;
 import edu.java.bot.service.processor.ProcessCommand;
 import edu.java.bot.service.processor.RemoveLink;
+import java.util.HashSet;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
