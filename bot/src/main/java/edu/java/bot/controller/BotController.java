@@ -29,6 +29,9 @@ public class BotController implements UpdatesListener {
     public int process(List<Update> updates) {
         for (Update update : updates) {
             Message message = update.message();
+            if (message == null) {
+                continue;
+            }
             long chatId = message.chat().id();
             LOGGER.info("Processing message \"{}\" from chat no. {}", message.text(), chatId);
             String responseMessage = botService.process(update);
