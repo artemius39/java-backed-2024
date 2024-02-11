@@ -14,7 +14,7 @@ public class RemoveLink implements MessageProcessor {
         }
         if (user.removeLink(link)) {
             user.setState(User.State.WAITING_FOR_COMMAND);
-            return "Ссылка была удалена";
+            return "Ссылка удалена из отслеживания";
         } else {
             return "Вы не отслеживаете эту ссылку. Попробуйте ещё раз или введите \"Отмена\", чтобы ничего не удалять";
         }
