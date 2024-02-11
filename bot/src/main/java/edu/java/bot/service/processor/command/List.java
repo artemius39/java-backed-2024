@@ -5,10 +5,9 @@ import edu.java.bot.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class List implements CommandProcessor {
+public class List extends BaseCommandProcessor {
     @Override
-    public String process(User user) {
-        assert user.getState() == User.State.WAITING_FOR_COMMAND;
+    protected String processImpl(User user) {
         Set<String> links = user.getLinks();
         return links.isEmpty() ? "Вы не отслеживаете никакие сайты" : String.join("\n", links);
     }

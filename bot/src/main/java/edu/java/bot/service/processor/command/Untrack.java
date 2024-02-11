@@ -4,7 +4,7 @@ import edu.java.bot.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Untrack implements CommandProcessor {
+public class Untrack extends BaseCommandProcessor {
     private final List list;
 
     public Untrack(List list) {
@@ -12,8 +12,7 @@ public class Untrack implements CommandProcessor {
     }
 
     @Override
-    public String process(User user) {
-        assert user.getState() == User.State.WAITING_FOR_COMMAND;
+    protected String processImpl(User user) {
         if (user.getLinks().isEmpty()) {
             return "Вы не отслеживаете никакие сайты";
         }

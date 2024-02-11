@@ -4,10 +4,9 @@ import edu.java.bot.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Help implements CommandProcessor {
+public class Help extends BaseCommandProcessor {
     @Override
-    public String process(User user) {
-        assert user.getState() == User.State.WAITING_FOR_COMMAND;
+    protected String processImpl(User user) {
         return """
             Доступные команды:
             /start -- зарегистрироваться в системе
