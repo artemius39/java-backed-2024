@@ -8,17 +8,17 @@ import java.util.stream.Collectors;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.model.User;
-import edu.java.bot.repository.InMemoryUserRepository;
 import edu.java.bot.repository.UserRepository;
 import edu.java.bot.service.processor.MessageProcessor;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BotService {
-    private final UserRepository userRepository = new InMemoryUserRepository();
+    private final UserRepository userRepository;
     private final Map<User.State, MessageProcessor> messageProcessors;
 
-    public BotService(List<MessageProcessor> messageProcessorList) {
+    public BotService(UserRepository userRepository, List<MessageProcessor> messageProcessorList) {
+        this.userRepository = userRepository;
         messageProcessors = messageProcessorList.stream()
                 .collect(Collectors.toMap(MessageProcessor::supportedState, Function.identity()));
     }
