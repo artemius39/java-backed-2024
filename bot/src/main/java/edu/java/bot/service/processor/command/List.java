@@ -5,7 +5,17 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 @Service
-public class List extends BaseCommandProcessor {
+public class List extends BaseCommand {
+    @Override
+    public String name() {
+        return "/list";
+    }
+
+    @Override
+    public String description() {
+        return "список отслеживаемых сайтов";
+    }
+
     @Override
     protected String processImpl(User user) {
         Set<String> links = user.getLinks();

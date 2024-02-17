@@ -4,7 +4,17 @@ import edu.java.bot.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Untrack extends BaseCommandProcessor {
+public class Untrack extends BaseCommand {
+    @Override
+    public String name() {
+        return "/untrack";
+    }
+
+    @Override
+    public String description() {
+        return "убрать сайт из отслеживания";
+    }
+
     @Override
     protected String processImpl(User user) {
         if (user.getLinks().isEmpty()) {

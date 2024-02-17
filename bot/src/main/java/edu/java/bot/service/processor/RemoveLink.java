@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RemoveLink extends BaseMessageProcessor {
     @Override
-    protected User.State supportedState() {
+    public User.State supportedState() {
         return User.State.WAITING_FOR_LINK_TO_REMOVE;
     }
 

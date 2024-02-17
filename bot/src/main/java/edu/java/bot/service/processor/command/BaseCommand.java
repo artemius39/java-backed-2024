@@ -2,7 +2,7 @@ package edu.java.bot.service.processor.command;
 
 import edu.java.bot.model.User;
 
-abstract class BaseCommandProcessor implements CommandProcessor {
+abstract class BaseCommand implements Command {
     @Override
     public String process(User user) {
         if (user.getState() != User.State.WAITING_FOR_COMMAND) {
