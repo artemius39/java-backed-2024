@@ -1,16 +1,15 @@
 package edu.java.bot.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.model.User;
 import edu.java.bot.repository.InMemoryUserRepository;
 import edu.java.bot.repository.UserRepository;
-import edu.java.bot.service.processor.AddLink;
 import edu.java.bot.service.processor.MessageProcessor;
-import edu.java.bot.service.processor.ProcessCommand;
-import edu.java.bot.service.processor.RemoveLink;
-import java.util.HashSet;
-import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,12 +17,9 @@ public class BotService {
     private final UserRepository userRepository = new InMemoryUserRepository();
     private final Map<User.State, MessageProcessor> messageProcessors;
 
-    public BotService(ProcessCommand processCommand, AddLink addLink, RemoveLink removeLink) {
-        messageProcessors = Map.of(
-            User.State.WAITING_FOR_COMMAND, processCommand,
-            User.State.WAITING_FOR_LINK_TO_ADD, addLink,
-            User.State.WAITING_FOR_LINK_TO_REMOVE, removeLink
-        );
+    public BotService(List<MessageProcessor> messageProcessorList) {
+        messageProcessors = messageProcessorList.stream()
+                .collect(Collectors.toMap(MessageProcessor::supportedState, messageProcessor -> messageProcessor));
     }
 
     public String process(Update update) {

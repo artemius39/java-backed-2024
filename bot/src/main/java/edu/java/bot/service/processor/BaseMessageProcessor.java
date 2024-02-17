@@ -12,6 +12,4 @@ abstract class BaseMessageProcessor implements MessageProcessor {
     }
 
     protected abstract String processImpl(String message, User user);
-
-    protected abstract User.State supportedState();
 }

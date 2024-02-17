@@ -18,7 +18,7 @@ public class ProcessCommand extends BaseMessageProcessor {
     }
 
     @Override
-    protected User.State supportedState() {
+    public User.State supportedState() {
         return User.State.WAITING_FOR_COMMAND;
     }
 
