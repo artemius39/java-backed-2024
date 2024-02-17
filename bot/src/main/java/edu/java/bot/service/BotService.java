@@ -34,6 +34,9 @@ public class BotService {
             return userRepository.save(newUser);
         });
         MessageProcessor messageProcessor = messageProcessors.get(user.getState());
+        if (messageProcessor == null) {
+            throw new UnsupportedOperationException("User state " + user.getState() + " not supported");
+        }
         return messageProcessor.process(message.text(), user);
     }
 }
