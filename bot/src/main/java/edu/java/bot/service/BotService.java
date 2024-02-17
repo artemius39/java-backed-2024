@@ -3,6 +3,7 @@ package edu.java.bot.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
@@ -19,7 +20,7 @@ public class BotService {
 
     public BotService(List<MessageProcessor> messageProcessorList) {
         messageProcessors = messageProcessorList.stream()
-                .collect(Collectors.toMap(MessageProcessor::supportedState, messageProcessor -> messageProcessor));
+                .collect(Collectors.toMap(MessageProcessor::supportedState, Function.identity()));
     }
 
     public String process(Update update) {

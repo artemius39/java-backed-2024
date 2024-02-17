@@ -1,6 +1,7 @@
 package edu.java.bot.service.processor;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import edu.java.bot.model.User;
 import edu.java.bot.service.processor.command.Command;
@@ -14,7 +15,7 @@ public class ProcessCommand extends BaseMessageProcessor {
 
     public ProcessCommand(List<Command> commands) {
         commandProcessors = commands.stream()
-                .collect(Collectors.toMap(Command::name, command -> command));
+                .collect(Collectors.toMap(Command::name, Function.identity()));
     }
 
     @Override
