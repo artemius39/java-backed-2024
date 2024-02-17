@@ -1,15 +1,15 @@
 package edu.java.bot.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.model.User;
 import edu.java.bot.repository.UserRepository;
 import edu.java.bot.service.processor.MessageProcessor;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service

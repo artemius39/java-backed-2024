@@ -1,12 +1,12 @@
 package edu.java.bot.service.processor;
 
+import edu.java.bot.model.User;
+import edu.java.bot.service.processor.command.Command;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import edu.java.bot.model.User;
-import edu.java.bot.service.processor.command.Command;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class ProcessCommand extends BaseMessageProcessor {

@@ -1,8 +1,8 @@
 package edu.java.bot.repository;
 
 import edu.java.bot.model.User;
-import org.springframework.stereotype.Repository;
 import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository {
