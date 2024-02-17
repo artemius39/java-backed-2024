@@ -1,20 +1,18 @@
 package edu.java.bot.controller;
 
+import java.util.List;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.service.BotService;
-import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 
 @Controller
+@Log4j2
 public class BotController implements UpdatesListener {
-    private static final Logger LOGGER = LogManager.getLogger("Bot Controller");
-
     private final TelegramBot bot;
     private final BotService botService;
 
@@ -33,9 +31,9 @@ public class BotController implements UpdatesListener {
                 continue;
             }
             long chatId = message.chat().id();
-            LOGGER.info("Processing message \"{}\" from chat no. {}", message.text(), chatId);
+            log.info("Processing message \"{}\" from chat no. {}", message.text(), chatId);
             String responseMessage = botService.process(update);
-            LOGGER.info("Responding to \"{}\" from chat no. {} with \"{}\"", message.text(), chatId, responseMessage);
+            log.info("Responding to \"{}\" from chat no. {} with \"{}\"", message.text(), chatId, responseMessage);
             bot.execute(new SendMessage(chatId, responseMessage));
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
