@@ -27,14 +27,16 @@ public class BotController implements UpdatesListener {
     public int process(List<Update> updates) {
         for (Update update : updates) {
             Message message = update.message();
-            if (message == null) {
-                continue;
+            if (message != null) {
+                long chatId = message.chat().id();
+                log.info("Processing message \"{}\" from chat no. {}", message.text(), chatId);
+                String responseMessage = botService.process(update);
+                log.info(
+                    "Responding to \"{}\" from chat no. {} with \"{}\"",
+                    message.text(), chatId, responseMessage
+                );
+                bot.execute(new SendMessage(chatId, responseMessage));
             }
-            long chatId = message.chat().id();
-            log.info("Processing message \"{}\" from chat no. {}", message.text(), chatId);
-            String responseMessage = botService.process(update);
-            log.info("Responding to \"{}\" from chat no. {} with \"{}\"", message.text(), chatId, responseMessage);
-            bot.execute(new SendMessage(chatId, responseMessage));
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
