@@ -47,7 +47,7 @@ public class ScrapperController {
     ) {
         long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
         log.info("Added link {} to chat no. {}", link, id);
-        return new LinkResponse(chatId, link.url());
+        return new LinkResponse(chatId, link.link());
     }
 
     @DeleteMapping("/links")
@@ -57,7 +57,7 @@ public class ScrapperController {
     ) {
         long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
         log.info("Removed link {} from chat no. {}", link, id);
-        return new LinkResponse(chatId, link.url());
+        return new LinkResponse(chatId, link.link());
     }
 
     private long parseLong(String number, String description) {
