@@ -11,11 +11,15 @@ public record ApiErrorResponse(
     List<String> stackTrace
 ) {
     public ApiErrorResponse(String description, String code, Throwable cause) {
+        this(description, code, cause.getMessage(), cause);
+    }
+
+    public ApiErrorResponse(String description, String code, String message, Throwable cause) {
         this(
             description,
             code,
             cause.getClass().getSimpleName(),
-            cause.getMessage(),
+            message,
             Arrays.stream(cause.getStackTrace())
                 .map(StackTraceElement::toString)
                 .toList()
