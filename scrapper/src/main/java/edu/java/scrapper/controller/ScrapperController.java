@@ -1,8 +1,9 @@
 package edu.java.scrapper.controller;
 
-import edu.java.scrapper.dto.request.LinkRequest;
+import edu.java.scrapper.dto.request.AddLinkRequest;
+import edu.java.scrapper.dto.request.RemoveLinkRequest;
 import edu.java.scrapper.dto.response.LinkResponse;
-import edu.java.scrapper.dto.response.LinksResponse;
+import edu.java.scrapper.dto.response.ListLinksResponse;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,20 +28,20 @@ public class ScrapperController {
     }
 
     @GetMapping("/links")
-    public LinksResponse getAllLinks(@RequestParam long tgChatId) {
-        LinksResponse response = new LinksResponse(List.of());
+    public ListLinksResponse getAllLinks(@RequestParam long tgChatId) {
+        ListLinksResponse response = new ListLinksResponse(List.of());
         log.info("Fetched all links: {}", response);
         return response;
     }
 
     @PostMapping("/links")
-    public LinkResponse addLink(@RequestParam long tgChatId, @RequestBody LinkRequest link) {
+    public LinkResponse addLink(@RequestParam long tgChatId, @RequestBody AddLinkRequest link) {
         log.info("Added link {} to chat no. {}", link, tgChatId);
         return new LinkResponse(tgChatId, link.url());
     }
 
     @DeleteMapping("/links")
-    public LinkResponse deleteLink(@RequestParam long tgChatId, @RequestBody LinkRequest link) {
+    public LinkResponse removeLink(@RequestParam long tgChatId, @RequestBody RemoveLinkRequest link) {
         log.info("Removed link {} from chat no. {}", link, tgChatId);
         return new LinkResponse(tgChatId, link.url());
     }
