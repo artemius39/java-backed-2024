@@ -46,4 +46,10 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
         );
         return ResponseEntity.badRequest().body(response);
     }
+
+    @ExceptionHandler(ChatNotFoundException.class)
+    protected ResponseEntity<ApiErrorResponse> handleChatNotFoundException(ChatNotFoundException e) {
+        ApiErrorResponse response = new ApiErrorResponse("Chat not found", "400", e);
+        return ResponseEntity.badRequest().body(response);
+    }
 }
