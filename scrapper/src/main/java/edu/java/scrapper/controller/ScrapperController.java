@@ -4,6 +4,7 @@ import edu.java.scrapper.dto.request.AddLinkRequest;
 import edu.java.scrapper.dto.request.RemoveLinkRequest;
 import edu.java.scrapper.dto.response.LinkResponse;
 import edu.java.scrapper.dto.response.ListLinksResponse;
+import edu.java.scrapper.exception.InvalidParameterException;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,8 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 public class ScrapperController {
     @PostMapping("/tg-chat/{id}")
-    public void registerChat(@PathVariable long id) {
-        log.info("Registered chat no. {}", id);
+    public void registerChat(@PathVariable String id) {
+        long chatId = parseLong(id, "Invalid chat id");
+        log.info("Registered chat no. {}", chatId);
     }
 
     @DeleteMapping("/tg-chat/{id}")
@@ -50,5 +52,13 @@ public class ScrapperController {
     ) {
         log.info("Removed link {} from chat no. {}", link, tgChatId);
         return new LinkResponse(tgChatId, link.url());
+    }
+
+    private long parseLong(String number, String errorMessage) {
+        try {
+            return Long.parseLong(number);
+        } catch (NumberFormatException e) {
+            throw new InvalidParameterException(errorMessage + ": " + number);
+        }
     }
 }
