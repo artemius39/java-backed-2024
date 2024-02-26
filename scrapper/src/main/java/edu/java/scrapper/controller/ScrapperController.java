@@ -18,47 +18,53 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Log4j2
 public class ScrapperController {
+    private static final String INVALID_CHAT_ID_MESSAGE = "Invalid chat id";
+
     @PostMapping("/tg-chat/{id}")
     public void registerChat(@PathVariable String id) {
-        long chatId = parseLong(id, "Invalid chat id");
+        long chatId = parseLong(id, "chat id");
         log.info("Registered chat no. {}", chatId);
     }
 
     @DeleteMapping("/tg-chat/{id}")
-    public void deleteChat(@PathVariable long id) {
-        log.info("Deleted chat no. {}", id);
+    public void deleteChat(@PathVariable String id) {
+        long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
+        log.info("Deleted chat no. {}", chatId);
     }
 
     @GetMapping("/links")
-    public ListLinksResponse getAllLinks(@RequestParam(name = "Tg-Chat-Id") long tgChatId) {
+    public ListLinksResponse getAllLinks(@RequestParam(name = "Tg-Chat-Id") String id) {
+        long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
         ListLinksResponse response = new ListLinksResponse(List.of());
-        log.info("Fetched all links: {}", response);
+        log.info("Fetched all links: {} for chat no. {}", response, chatId);
         return response;
     }
 
     @PostMapping("/links")
     public LinkResponse addLink(
-        @RequestParam(name = "Tg-Chat-Id") long tgChatId,
+        @RequestParam(name = "Tg-Chat-Id") String id,
         @RequestBody AddLinkRequest link
     ) {
-        log.info("Added link {} to chat no. {}", link, tgChatId);
-        return new LinkResponse(tgChatId, link.url());
+        long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
+        log.info("Added link {} to chat no. {}", link, id);
+        return new LinkResponse(chatId, link.url());
     }
 
     @DeleteMapping("/links")
     public LinkResponse removeLink(
-        @RequestParam(name = "Tg-Chat-Id") long tgChatId,
+        @RequestParam(name = "Tg-Chat-Id") String id,
         @RequestBody RemoveLinkRequest link
     ) {
-        log.info("Removed link {} from chat no. {}", link, tgChatId);
-        return new LinkResponse(tgChatId, link.url());
+        long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
+        log.info("Removed link {} from chat no. {}", link, id);
+        return new LinkResponse(chatId, link.url());
     }
 
-    private long parseLong(String number, String errorMessage) {
+    private long parseLong(String number, String description) {
         try {
             return Long.parseLong(number);
         } catch (NumberFormatException e) {
-            throw new InvalidParameterException(errorMessage + ": " + number);
+            throw new InvalidParameterException(description + ": " + number);
         }
     }
 }
