@@ -18,23 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Log4j2
 public class ScrapperController {
-    private static final String INVALID_CHAT_ID_MESSAGE = "Invalid chat id";
 
     @PostMapping("/tg-chat/{id}")
     public void registerChat(@PathVariable String id) {
-        long chatId = parseLong(id, "chat id");
+        long chatId = parseChatId(id);
         log.info("Registered chat no. {}", chatId);
     }
 
     @DeleteMapping("/tg-chat/{id}")
     public void deleteChat(@PathVariable String id) {
-        long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
+        long chatId = parseChatId(id);
         log.info("Deleted chat no. {}", chatId);
     }
 
     @GetMapping("/links")
     public ListLinksResponse getAllLinks(@RequestParam(name = "Tg-Chat-Id") String id) {
-        long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
+        long chatId = parseChatId(id);
         ListLinksResponse response = new ListLinksResponse(List.of());
         log.info("Fetched all links: {} for chat no. {}", response, chatId);
         return response;
@@ -45,7 +44,7 @@ public class ScrapperController {
         @RequestParam(name = "Tg-Chat-Id") String id,
         @RequestBody AddLinkRequest link
     ) {
-        long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
+        long chatId = parseChatId(id);
         log.info("Added link {} to chat no. {}", link, id);
         return new LinkResponse(chatId, link.link());
     }
@@ -55,12 +54,16 @@ public class ScrapperController {
         @RequestParam(name = "Tg-Chat-Id") String id,
         @RequestBody RemoveLinkRequest link
     ) {
-        long chatId = parseLong(id, INVALID_CHAT_ID_MESSAGE);
+        long chatId = parseChatId(id);
         log.info("Removed link {} from chat no. {}", link, id);
         return new LinkResponse(chatId, link.link());
     }
 
-    private long parseLong(String number, String description) {
+    private long parseChatId(String id) {
+        return parseLong(id, "Invalid chat id");
+    }
+
+    private long parseLong(String number, @SuppressWarnings("SameParameterValue") String description) {
         try {
             return Long.parseLong(number);
         } catch (NumberFormatException e) {
