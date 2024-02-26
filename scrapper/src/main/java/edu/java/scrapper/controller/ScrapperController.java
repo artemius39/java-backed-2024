@@ -28,20 +28,26 @@ public class ScrapperController {
     }
 
     @GetMapping("/links")
-    public ListLinksResponse getAllLinks(@RequestParam long tgChatId) {
+    public ListLinksResponse getAllLinks(@RequestParam(name = "Tg-Chat-Id") long tgChatId) {
         ListLinksResponse response = new ListLinksResponse(List.of());
         log.info("Fetched all links: {}", response);
         return response;
     }
 
     @PostMapping("/links")
-    public LinkResponse addLink(@RequestParam long tgChatId, @RequestBody AddLinkRequest link) {
+    public LinkResponse addLink(
+        @RequestParam(name = "Tg-Chat-Id") long tgChatId,
+        @RequestBody AddLinkRequest link
+    ) {
         log.info("Added link {} to chat no. {}", link, tgChatId);
         return new LinkResponse(tgChatId, link.url());
     }
 
     @DeleteMapping("/links")
-    public LinkResponse removeLink(@RequestParam long tgChatId, @RequestBody RemoveLinkRequest link) {
+    public LinkResponse removeLink(
+        @RequestParam(name = "Tg-Chat-Id") long tgChatId,
+        @RequestBody RemoveLinkRequest link
+    ) {
         log.info("Removed link {} from chat no. {}", link, tgChatId);
         return new LinkResponse(tgChatId, link.url());
     }
