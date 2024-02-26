@@ -2,6 +2,7 @@ package edu.java.scrapper.exception;
 
 import edu.java.scrapper.dto.response.ApiErrorResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
@@ -17,6 +18,19 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(InvalidParameterException.class)
     protected ResponseEntity<ApiErrorResponse> handleInvalidParameterException(InvalidParameterException e) {
         ApiErrorResponse response = new ApiErrorResponse("Invalid request parameter", "400", e);
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    protected ResponseEntity<ApiErrorResponse> handleMissingServletRequestParameterException(
+        MissingServletRequestParameterException e
+    ) {
+        ApiErrorResponse response = new ApiErrorResponse(
+            "Missing required parameter",
+            "400",
+            "Parameter " + e.getParameterName() + " is required",
+            e
+        );
         return ResponseEntity.badRequest().body(response);
     }
 }
