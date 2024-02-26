@@ -1,6 +1,7 @@
 package edu.java.scrapper.exception;
 
 import edu.java.scrapper.dto.response.ApiErrorResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -50,6 +51,6 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(ChatNotFoundException.class)
     protected ResponseEntity<ApiErrorResponse> handleChatNotFoundException(ChatNotFoundException e) {
         ApiErrorResponse response = new ApiErrorResponse("Chat not found", "400", e);
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }
