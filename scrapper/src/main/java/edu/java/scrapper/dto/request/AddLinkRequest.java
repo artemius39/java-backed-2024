@@ -2,5 +2,5 @@ package edu.java.scrapper.dto.request;
 
 import java.net.URI;
 
-public record LinkRequest(URI url) {
+public record AddLinkRequest(URI url) {
 }
