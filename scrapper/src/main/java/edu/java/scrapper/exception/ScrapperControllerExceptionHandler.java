@@ -40,7 +40,7 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<ApiErrorResponse> handleHttpMessageConversionException(
         HttpMessageConversionException e
     ) {
-        ApiErrorResponse response = new ApiErrorResponse("Invalid request body", "400", e);
+        ApiErrorResponse response = new ApiErrorResponse("Invalid request format", "400", e);
         return ResponseEntity.badRequest().body(response);
     }
 
