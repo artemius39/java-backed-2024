@@ -60,14 +60,10 @@ public class ScrapperController {
     }
 
     private long parseChatId(String id) {
-        return parseLong(id, "Invalid chat id");
-    }
-
-    private long parseLong(String number, @SuppressWarnings("SameParameterValue") String description) {
         try {
-            return Long.parseLong(number);
+            return Long.parseLong(id);
         } catch (NumberFormatException e) {
-            throw new InvalidParameterException(description + ": " + number);
+            throw new InvalidParameterException("Invalid chat id: " + id);
         }
     }
 }
