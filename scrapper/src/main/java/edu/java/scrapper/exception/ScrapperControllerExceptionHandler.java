@@ -11,15 +11,19 @@ import org.springframework.web.reactive.result.method.annotation.ResponseEntityE
 
 @RestControllerAdvice
 public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private static final String BAD_REQUEST = "400";
+    private static final String NOT_FOUND = "404";
+
     @ExceptionHandler(UserAlreadyRegisteredException.class)
     protected ResponseEntity<ApiErrorResponse> handleUserAlreadyRegisteredException(UserAlreadyRegisteredException e) {
-        ApiErrorResponse response = new ApiErrorResponse("User already registered", "400", e);
+        ApiErrorResponse response = new ApiErrorResponse("User already registered", BAD_REQUEST, e);
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(InvalidParameterException.class)
     protected ResponseEntity<ApiErrorResponse> handleInvalidParameterException(InvalidParameterException e) {
-        ApiErrorResponse response = new ApiErrorResponse("Invalid request parameter", "400", e);
+        ApiErrorResponse response = new ApiErrorResponse("Invalid request parameter", BAD_REQUEST, e);
         return ResponseEntity.badRequest().body(response);
     }
 
@@ -29,7 +33,7 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
     ) {
         ApiErrorResponse response = new ApiErrorResponse(
             "Missing required parameter",
-            "400",
+                BAD_REQUEST,
             "Parameter " + e.getParameterName() + " is required",
             e
         );
@@ -40,13 +44,13 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<ApiErrorResponse> handleHttpMessageConversionException(
         HttpMessageConversionException e
     ) {
-        ApiErrorResponse response = new ApiErrorResponse("Invalid request format", "400", e);
+        ApiErrorResponse response = new ApiErrorResponse("Invalid request format", BAD_REQUEST, e);
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(ChatNotFoundException.class)
     protected ResponseEntity<ApiErrorResponse> handleChatNotFoundException(ChatNotFoundException e) {
-        ApiErrorResponse response = new ApiErrorResponse("Chat not found", "404", e);
+        ApiErrorResponse response = new ApiErrorResponse("Chat not found", NOT_FOUND, e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
@@ -54,13 +58,13 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<ApiErrorResponse> handleLinkAlreadyTrackedException(
         LinkAlreadyTrackedException e
     ) {
-        ApiErrorResponse response = new ApiErrorResponse("Link already tracked", "400", e);
+        ApiErrorResponse response = new ApiErrorResponse("Link already tracked", BAD_REQUEST, e);
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(LinkNotTrackedException.class)
     protected ResponseEntity<ApiErrorResponse> handleLinkNotTrackedException(LinkNotTrackedException e) {
-        ApiErrorResponse response = new ApiErrorResponse("Link not tracked", "404", e);
+        ApiErrorResponse response = new ApiErrorResponse("Link not tracked", NOT_FOUND, e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }
