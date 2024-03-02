@@ -45,6 +45,7 @@ public class ClientConfiguration {
         return factory.createClient(StackOverflowClient.class);
     }
 
+    @Bean
     public ScrapperClient scrapperClient(@Value("http://localhost:8090") String baseUrl) {
         WebClient webClient = WebClient.builder()
             .baseUrl(baseUrl)
