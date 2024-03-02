@@ -1,6 +1,6 @@
 package edu.java.scrapper.exception;
 
-import edu.java.scrapper.dto.response.ApiErrorResponse;
+import edu.java.scrapper.dto.bot.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;

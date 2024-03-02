@@ -2,7 +2,7 @@ package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.scrapper.configuration.ClientConfiguration;
-import edu.java.scrapper.dto.request.LinkUpdateRequest;
+import edu.java.scrapper.dto.bot.LinkUpdateRequest;
 import edu.java.scrapper.exception.ApiException;
 import java.util.List;
 import org.junit.jupiter.api.Test;

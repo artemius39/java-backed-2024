@@ -1,9 +1,9 @@
 package edu.java.scrapper.controller;
 
-import edu.java.scrapper.dto.request.AddLinkRequest;
-import edu.java.scrapper.dto.request.RemoveLinkRequest;
-import edu.java.scrapper.dto.response.LinkResponse;
-import edu.java.scrapper.dto.response.ListLinksResponse;
+import edu.java.scrapper.dto.bot.AddLinkRequest;
+import edu.java.scrapper.dto.bot.RemoveLinkRequest;
+import edu.java.scrapper.dto.bot.LinkResponse;
+import edu.java.scrapper.dto.bot.ListLinksResponse;
 import edu.java.scrapper.exception.InvalidParameterException;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
