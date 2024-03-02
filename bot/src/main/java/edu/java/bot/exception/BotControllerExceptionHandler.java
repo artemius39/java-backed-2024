@@ -2,7 +2,7 @@ package edu.java.bot.exception;
 
 import edu.java.bot.dto.ApiErrorResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -15,11 +15,11 @@ public class BotControllerExceptionHandler extends ResponseEntityExceptionHandle
         return ResponseEntity.badRequest().body(response);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    protected ResponseEntity<ApiErrorResponse> handleHttpMessageNotReadableException(
-        HttpMessageNotReadableException e
+    @ExceptionHandler(HttpMessageConversionException.class)
+    protected ResponseEntity<ApiErrorResponse> handleHttpMessageConversionException(
+        HttpMessageConversionException e
     ) {
-        ApiErrorResponse response = new ApiErrorResponse("Invalid JSON", "400", e);
+        ApiErrorResponse response = new ApiErrorResponse("Invalid request format", "400", e);
         return ResponseEntity.badRequest().body(response);
     }
 }
