@@ -49,4 +49,18 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
         ApiErrorResponse response = new ApiErrorResponse("Chat not found", "404", e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
+    @ExceptionHandler(LinkAlreadyTrackedException.class)
+    protected ResponseEntity<ApiErrorResponse> handleLinkAlreadyTrackedException(
+        LinkAlreadyTrackedException e
+    ) {
+        ApiErrorResponse response = new ApiErrorResponse("Link already tracked", "400", e);
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(LinkNotTrackedException.class)
+    protected ResponseEntity<ApiErrorResponse> handleLinkNotTrackedException(LinkNotTrackedException e) {
+        ApiErrorResponse response = new ApiErrorResponse("Link not tracked", "404", e);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
 }
