@@ -3,7 +3,7 @@ package edu.java.scrapper.exception;
 import edu.java.scrapper.dto.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -36,15 +36,11 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
         return ResponseEntity.badRequest().body(response);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    protected ResponseEntity<ApiErrorResponse> handleHttpMessageNotReadableException(
-        HttpMessageNotReadableException e
+    @ExceptionHandler(HttpMessageConversionException.class)
+    protected ResponseEntity<ApiErrorResponse> handleHttpMessageConversionException(
+        HttpMessageConversionException e
     ) {
-        ApiErrorResponse response = new ApiErrorResponse(
-            "Invalid JSON",
-            "400",
-            e
-        );
+        ApiErrorResponse response = new ApiErrorResponse("Invalid request body", "400", e);
         return ResponseEntity.badRequest().body(response);
     }
 
