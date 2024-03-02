@@ -1,7 +1,7 @@
 package edu.java.bot.configuration;
 
 import edu.java.bot.client.BotClient;
-import edu.java.bot.dto.ApiErrorResponse;
+import edu.java.bot.dto.response.ApiErrorResponse;
 import edu.java.bot.exception.ApiException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
