@@ -3,7 +3,7 @@ package edu.java.scrapper.configuration;
 import edu.java.scrapper.client.GithubClient;
 import edu.java.scrapper.client.ScrapperClient;
 import edu.java.scrapper.client.StackOverflowClient;
-import edu.java.scrapper.dto.response.ApiErrorResponse;
+import edu.java.scrapper.dto.bot.ApiErrorResponse;
 import edu.java.scrapper.exception.ApiException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
