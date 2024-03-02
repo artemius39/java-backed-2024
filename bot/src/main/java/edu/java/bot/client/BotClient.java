@@ -1,17 +1,15 @@
 package edu.java.bot.client;
 
-import edu.java.bot.dto.AddLinkRequest;
-import edu.java.bot.dto.LinkResponse;
-import edu.java.bot.dto.ListLinksResponse;
-import edu.java.bot.dto.RemoveLinkRequest;
-import org.springframework.stereotype.Component;
+import edu.java.bot.dto.request.AddLinkRequest;
+import edu.java.bot.dto.response.LinkResponse;
+import edu.java.bot.dto.response.ListLinksResponse;
+import edu.java.bot.dto.request.RemoveLinkRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
-import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
 public interface BotClient {

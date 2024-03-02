@@ -1,6 +1,6 @@
 package edu.java.bot.exception;
 
-import edu.java.bot.dto.ApiErrorResponse;
+import edu.java.bot.dto.response.ApiErrorResponse;
 import lombok.Getter;
 
 @Getter
