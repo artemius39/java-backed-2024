@@ -9,9 +9,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 public class BotControllerExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private static final String BAD_REQUEST = "400";
+
     @ExceptionHandler(ChatNotFoundException.class)
     protected ResponseEntity<ApiErrorResponse> handleChatNotFoundException(ChatNotFoundException e) {
-        ApiErrorResponse response = new ApiErrorResponse("Chat not found", "400", e);
+        ApiErrorResponse response = new ApiErrorResponse("Chat not found", BAD_REQUEST, e);
         return ResponseEntity.badRequest().body(response);
     }
 
@@ -19,7 +22,7 @@ public class BotControllerExceptionHandler extends ResponseEntityExceptionHandle
     protected ResponseEntity<ApiErrorResponse> handleHttpMessageConversionException(
         HttpMessageConversionException e
     ) {
-        ApiErrorResponse response = new ApiErrorResponse("Invalid request format", "400", e);
+        ApiErrorResponse response = new ApiErrorResponse("Invalid request format", BAD_REQUEST, e);
         return ResponseEntity.badRequest().body(response);
     }
 }
