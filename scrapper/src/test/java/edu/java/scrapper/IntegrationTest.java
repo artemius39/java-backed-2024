@@ -1,33 +1,24 @@
 package edu.java.scrapper;
 
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import org.junit.jupiter.api.Test;
 
-@Testcontainers
-public abstract class IntegrationTest {
-    public static PostgreSQLContainer<?> POSTGRES;
+public class IntegrationTest extends IntegrationEnvironment {
+    @Test
+    void migrationsAreRun() throws SQLException {
+        Connection connection = DriverManager.getConnection(
+            POSTGRES.getJdbcUrl(),
+            POSTGRES.getUsername(),
+            POSTGRES.getPassword()
+        );
 
-    static {
-        POSTGRES = new PostgreSQLContainer<>("postgres:15")
-            .withDatabaseName("scrapper")
-            .withUsername("postgres")
-            .withPassword("postgres");
-        POSTGRES.start();
+        Statement statement = connection.createStatement();
 
-        runMigrations(POSTGRES);
-    }
-
-    private static void runMigrations(JdbcDatabaseContainer<?> c) {
-        // ...
-    }
-
-    @DynamicPropertySource
-    static void jdbcProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
-        registry.add("spring.datasource.username", POSTGRES::getUsername);
-        registry.add("spring.datasource.password", POSTGRES::getPassword);
+        statement.execute("select * from \"user\""); // must not throw
+        statement.execute("select * from link"); // must not throw
+        statement.execute("select * from user_link"); // must not throw
     }
 }
