@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class ClientConfiguration {
     @Bean
-    public BotClient botClient(@Value("http://localhost:8080") String baseUrl) {
+    public BotClient botClient(@Value("${client.bot.base-url}") String baseUrl) {
         WebClient webClient = WebClient.builder()
             .baseUrl(baseUrl)
             .defaultStatusHandler(

@@ -19,7 +19,7 @@ import reactor.netty.http.client.HttpClient;
 @Configuration
 public class ClientConfiguration {
     @Bean
-    public GithubClient githubClient(@Value("https://api.github.com") String baseUrl) {
+    public GithubClient githubClient(@Value("${client.github.base-url}") String baseUrl) {
         WebClient webClient = WebClient.builder()
             .baseUrl(baseUrl)
             .build();
@@ -30,7 +30,7 @@ public class ClientConfiguration {
     }
 
     @Bean
-    public StackOverflowClient stackOverflowClient(@Value("https://api.stackexchange.com") String baseUrl) {
+    public StackOverflowClient stackOverflowClient(@Value("${client.stackoverflow.base-url}") String baseUrl) {
         HttpClient httpClient = HttpClient.create()
                 .baseUrl(baseUrl)
                 .compress(true);
@@ -46,7 +46,7 @@ public class ClientConfiguration {
     }
 
     @Bean
-    public ScrapperClient scrapperClient(@Value("http://localhost:8090") String baseUrl) {
+    public ScrapperClient scrapperClient(@Value("${client.scrapper.base-url}") String baseUrl) {
         WebClient webClient = WebClient.builder()
             .baseUrl(baseUrl)
             .defaultStatusHandler(
