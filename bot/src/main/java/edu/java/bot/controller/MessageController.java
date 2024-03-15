@@ -8,9 +8,9 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.service.BotService;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
-@Controller
+@Component
 @Log4j2
 public class MessageController implements UpdatesListener {
     private final TelegramBot bot;
