@@ -4,7 +4,7 @@ import edu.java.scrapper.client.ScrapperClient;
 import edu.java.scrapper.configuration.ApplicationConfig;
 import edu.java.scrapper.dto.bot.LinkUpdateRequest;
 import edu.java.scrapper.model.Link;
-import edu.java.scrapper.repository.JdbcLinkRepository;
+import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.service.Updater;
 import edu.java.scrapper.service.updater.LinkUpdater;
 import java.time.OffsetDateTime;

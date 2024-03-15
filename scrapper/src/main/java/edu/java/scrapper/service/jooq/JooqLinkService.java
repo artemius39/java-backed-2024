@@ -1,21 +1,20 @@
-package edu.java.scrapper.service.jdbc;
+package edu.java.scrapper.service.jooq;
 
 import edu.java.scrapper.dto.bot.LinkResponse;
 import edu.java.scrapper.dto.bot.ListLinksResponse;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
-import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
+import edu.java.scrapper.repository.jooq.JooqLinkRepository;
 import edu.java.scrapper.service.LinkService;
 import java.net.URI;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
-@Primary
 @AllArgsConstructor
-public class JdbcLinkService implements LinkService {
-    private final JdbcLinkRepository linkRepository;
+public class JooqLinkService implements LinkService {
+    private final JooqLinkRepository linkRepository;
 
     @Override
     public LinkResponse add(long chatId, URI url) {
@@ -29,10 +28,13 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public ListLinksResponse listAll(long chatId) {
-        return new ListLinksResponse(linkRepository.findByUserId(chatId)
+        return linkRepository.findByUserId(chatId)
             .stream()
             .map(this::toDto)
-            .toList());
+            .collect(Collectors.collectingAndThen(
+                Collectors.toList(),
+                list -> new ListLinksResponse(list, list.size())
+            ));
     }
 
     private LinkResponse toDto(Link link) {

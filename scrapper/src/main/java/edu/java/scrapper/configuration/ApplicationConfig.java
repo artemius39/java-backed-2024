@@ -2,6 +2,9 @@ package edu.java.scrapper.configuration;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
+import org.jooq.conf.RenderNameCase;
+import org.jooq.impl.DefaultConfiguration;
+import org.springframework.boot.autoconfigure.jooq.DefaultConfigurationCustomizer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.validation.annotation.Validated;
@@ -17,5 +20,11 @@ public record ApplicationConfig(
     Duration updateInterval
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
+    }
+
+    @Bean
+    public DefaultConfigurationCustomizer configurationCustomizer() {
+        return (DefaultConfiguration c) -> c.settings()
+            .withRenderNameCase(RenderNameCase.LOWER);
     }
 }

@@ -6,27 +6,26 @@ import edu.java.scrapper.dto.stackoverflow.QuestionsResponse;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.Optional;
-import java.util.OptionalLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class StackOverflowQuestionLinkUpdater implements LinkUpdater {
+public class StackOverflowQuestionLinkUpdater extends BaseUpdater<Long> {
     private static final Pattern STACKOVERFLOW_QUESTION_PATTERN =
-        Pattern.compile("https://stackoverflow.com/questions/([^/]+)/[^/]+");
+        Pattern.compile("https://stackoverflow.com/questions/([^/]+)/[^/]+$");
 
     private final StackOverflowClient stackOverflowClient;
 
     @Override
     public Optional<String> tryUpdate(URI url, OffsetDateTime lastUpdatedAt) {
-        OptionalLong optional = parseUrl(url);
-        if (optional.isEmpty()) {
+        Long questionId = parseUrl(url);
+        if (questionId == null) {
             return Optional.empty();
         }
-        long questionId = optional.getAsLong();
 
         QuestionsResponse response = stackOverflowClient.getLastModificationTime(questionId);
         QuestionResponse question = response.items().getFirst();
@@ -37,20 +36,17 @@ public class StackOverflowQuestionLinkUpdater implements LinkUpdater {
     }
 
     @Override
-    public boolean supports(URI url) {
-        OptionalLong id = parseUrl(url);
-        if (id.isEmpty()) {
-            return false;
-        }
-        return stackOverflowClient.testUrl(id.getAsLong()).is2xxSuccessful();
+    protected HttpStatus testUrl(Long parsedUrl) {
+        return stackOverflowClient.testQuestionUrl(parsedUrl);
     }
 
-    private OptionalLong parseUrl(URI url) {
+    @Override
+    protected Long parseUrl(URI url) {
         Matcher matcher = STACKOVERFLOW_QUESTION_PATTERN.matcher(url.toString());
         try {
-            return matcher.find() ? OptionalLong.of(Long.parseLong(matcher.group(1))) : OptionalLong.empty();
+            return matcher.find() ? Long.parseLong(matcher.group(1)) : null;
         } catch (NumberFormatException e) {
-            return OptionalLong.empty();
+            return null;
         }
     }
 }
