@@ -3,6 +3,7 @@ app:
     enable: true
     interval: 10s
     force-check-delay: 10s
+  update-interval: 1m
 
 client:
   github:
@@ -15,6 +16,13 @@ client:
 spring:
   application:
     name: scrapper
+  data-source:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: postgres
+    password: postgres
+  liquibase:
+    enabled: false
 
 server:
   port: 8080
