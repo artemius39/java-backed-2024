@@ -35,7 +35,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     // if link is already saved, return its id, otherwise, insert it and return auto generated id
     private Long insertIfNotExists(Link link) {
-        Long id = find(link);
+        Long id = findByUrl(link.getUrl());
         if (id != null) {
             return id;
         }
@@ -59,7 +59,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public Link remove(Link link, User user) {
-        Long id = find(link);
+        Long id = findByUrl(link.getUrl());
         if (id == null) {
             throw new LinkNotTrackedException(link.getUrl().toString());
         }
@@ -109,10 +109,10 @@ public class JdbcLinkRepository implements LinkRepository {
         );
     }
 
-    private Long find(Link link) {
+    private Long findByUrl(URI url) {
         List<Long> ids = jdbcTemplate.query(
             "select id from link where url=?",
-            new Object[] {link.getUrl().toString()},
+            new Object[] {url},
             new int[] {Types.VARCHAR},
             (resultSet, rowNum) -> resultSet.getLong("id")
         );
