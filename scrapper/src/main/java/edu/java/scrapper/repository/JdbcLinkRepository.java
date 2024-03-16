@@ -3,9 +3,11 @@ package edu.java.scrapper.repository;
 import edu.java.scrapper.exception.LinkNotTrackedException;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
+import java.net.URI;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -69,6 +71,18 @@ public class JdbcLinkRepository implements LinkRepository {
             jdbcTemplate.update("delete from link where id=?", link.getId());
         }
         return link;
+    }
+
+    @Override
+    public Collection<Link> findByUserId(Long userId) {
+        return jdbcTemplate.query(
+            "select * from link where id in (select link_id from user_link where user_id=?)",
+            (resultSet, i) -> new Link(
+                resultSet.getLong(1),
+                URI.create(resultSet.getString(2))
+            ),
+            userId
+        );
     }
 
     private Long find(Link link) {
