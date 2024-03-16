@@ -3,7 +3,6 @@ package edu.java.scrapper.service.updater;
 import edu.java.scrapper.client.StackOverflowClient;
 import edu.java.scrapper.dto.stackoverflow.QuestionResponse;
 import edu.java.scrapper.dto.stackoverflow.QuestionsResponse;
-import edu.java.scrapper.service.LinkUpdater;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
