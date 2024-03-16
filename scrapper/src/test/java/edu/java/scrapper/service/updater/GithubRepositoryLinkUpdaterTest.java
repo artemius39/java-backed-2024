@@ -56,7 +56,7 @@ class GithubRepositoryLinkUpdaterTest {
             .thenReturn(new RepositoryResponse(now));
         LinkUpdater updater = new GithubRepositoryLinkUpdater(client);
 
-        Optional<String> message = updater.update(URI.create("https://github.com/owner/name"), now);
+        Optional<String> message = updater.tryUpdate(URI.create("https://github.com/owner/name"), now);
 
         assertThat(message).isEmpty();
     }
@@ -74,7 +74,7 @@ class GithubRepositoryLinkUpdaterTest {
 
         LinkUpdater updater = new GithubRepositoryLinkUpdater(client);
 
-        Optional<String> message = updater.update(URI.create("https://github.com/owner/name"), yesterday);
+        Optional<String> message = updater.tryUpdate(URI.create("https://github.com/owner/name"), yesterday);
 
         assertThat(message).isNotEmpty();
     }
