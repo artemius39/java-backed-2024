@@ -7,6 +7,7 @@ import java.net.URI;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Types;
+import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +80,8 @@ public class JdbcLinkRepository implements LinkRepository {
             "select * from link where id in (select link_id from user_link where user_id=?)",
             (resultSet, i) -> new Link(
                 resultSet.getLong(1),
-                URI.create(resultSet.getString(2))
+                URI.create(resultSet.getString(2)),
+                resultSet.getTimestamp(3).toInstant().atOffset(ZoneOffset.UTC)
             ),
             userId
         );
