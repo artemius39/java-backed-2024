@@ -21,8 +21,12 @@ public class StackOverflowQuestionLinkUpdater implements LinkUpdater {
     private final StackOverflowClient stackOverflowClient;
 
     @Override
-    public Optional<String> update(URI url, OffsetDateTime lastUpdatedAt) {
-        long questionId = parseUrl(url).orElseThrow();
+    public Optional<String> tryUpdate(URI url, OffsetDateTime lastUpdatedAt) {
+        OptionalLong optional = parseUrl(url);
+        if (optional.isEmpty()) {
+            return Optional.empty();
+        }
+        long questionId = optional.getAsLong();
 
         QuestionsResponse response = stackOverflowClient.getLastModificationTime(questionId);
         QuestionResponse question = response.items().getFirst();

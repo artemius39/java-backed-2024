@@ -19,9 +19,11 @@ public class GithubRepositoryLinkUpdater implements LinkUpdater {
     private final GithubClient githubClient;
 
     @Override
-    public Optional<String> update(URI url, OffsetDateTime lastUpdatedAt) {
+    public Optional<String> tryUpdate(URI url, OffsetDateTime lastUpdatedAt) {
         RepositoryInfo info = parseUrl(url);
-        assert info != null : "Updating invalid link";
+        if (info == null) {
+            return Optional.empty();
+        }
 
         RepositoryResponse response = githubClient.getLastUpdateTime(info.owner(), info.name());
         if (response.updatedAt().isAfter(lastUpdatedAt)) {

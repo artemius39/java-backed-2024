@@ -76,7 +76,7 @@ class StackOverflowQuestionLinkUpdaterTest {
             .thenReturn(new QuestionsResponse(List.of(new QuestionResponse(yesterday))));
         LinkUpdater updater = new StackOverflowQuestionLinkUpdater(client);
 
-        Optional<String> message = updater.update(url, yesterday);
+        Optional<String> message = updater.tryUpdate(url, yesterday);
 
         assertThat(message).isEmpty();
     }
@@ -92,7 +92,7 @@ class StackOverflowQuestionLinkUpdaterTest {
             .thenReturn(new QuestionsResponse(List.of(new QuestionResponse(today))));
         LinkUpdater updater = new StackOverflowQuestionLinkUpdater(client);
 
-        Optional<String> message = updater.update(url, yesterday);
+        Optional<String> message = updater.tryUpdate(url, yesterday);
 
         assertThat(message).isNotEmpty();
     }
