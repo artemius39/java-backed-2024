@@ -9,4 +9,8 @@ import lombok.NoArgsConstructor;
 public class User {
     private Long id;
     private OffsetDateTime createdAt;
+
+    public User(Long chatId) {
+        id = chatId;
+    }
 }
