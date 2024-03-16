@@ -1,13 +1,13 @@
 package edu.java.scrapper.service;
 
-import edu.java.scrapper.model.Link;
+import edu.java.scrapper.dto.bot.LinkResponse;
+import edu.java.scrapper.dto.bot.ListLinksResponse;
 import java.net.URI;
-import java.util.Collection;
 
 public interface LinkService {
-    Link add(long chatId, URI url);
+    LinkResponse add(long chatId, URI url);
 
-    Link remove(long chatId, URI url);
+    LinkResponse remove(long chatId, URI url);
 
-    Collection<Link> listAll(long chatId);
+    ListLinksResponse listAll(long chatId);
 }
