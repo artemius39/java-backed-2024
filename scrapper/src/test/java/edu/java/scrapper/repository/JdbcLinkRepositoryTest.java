@@ -4,9 +4,12 @@ import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
 import java.net.URI;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -103,5 +106,36 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
             new Link(1L, URI.create("example.com"), time),
             new Link(2L, URI.create("example.org"), time)
         );
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void findByLastUpdateTimeTest() {
+        LinkRepository linkRepository = new JdbcLinkRepository(jdbcTemplate);
+        OffsetDateTime tooRecently = OffsetDateTime.now();
+        OffsetDateTime oldEnough = OffsetDateTime.now(ZoneId.of("UTC")).minusYears(1);
+        jdbcTemplate.update(
+            "insert into link (id, url, last_updated) values(1, 'example.com', ?), (2, 'example.org', ?)",
+            tooRecently, oldEnough
+        );
+
+        Collection<Link> links = linkRepository.findByLastUpdateTime(Duration.of(1, ChronoUnit.DAYS));
+
+        assertThat(links).containsExactly(new Link(2L, URI.create("example.org"), oldEnough));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void findByLinkIdTest() {
+        LinkRepository linkRepository = new JdbcLinkRepository(jdbcTemplate);
+        jdbcTemplate.update("insert into \"user\" (id, created_at) values(1, now()), (2, now()), (3, now())");
+        jdbcTemplate.update("insert into link (id, url, last_updated) values (1, 'example.com', now())");
+        jdbcTemplate.update("insert into user_link (user_id, link_id) values (1, 1), (2, 1)");
+
+        List<Long> ids = linkRepository.findByLinkId(1L);
+
+        assertThat(ids).containsExactlyInAnyOrder(1L, 2L);
     }
 }
