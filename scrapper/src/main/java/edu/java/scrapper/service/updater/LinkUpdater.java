@@ -1,4 +1,4 @@
-package edu.java.scrapper.service;
+package edu.java.scrapper.service.updater;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
