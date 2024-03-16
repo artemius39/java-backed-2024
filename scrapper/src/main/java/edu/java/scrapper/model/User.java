@@ -1,12 +1,12 @@
 package edu.java.scrapper.model;
 
 import java.time.OffsetDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-public class Chat {
+@NoArgsConstructor
+public class User {
     private Long id;
     private OffsetDateTime createdAt;
 }
