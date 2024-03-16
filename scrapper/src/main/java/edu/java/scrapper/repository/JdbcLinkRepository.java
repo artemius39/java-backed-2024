@@ -5,8 +5,12 @@ import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
 import java.net.URI;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.List;
@@ -78,12 +82,30 @@ public class JdbcLinkRepository implements LinkRepository {
     public Collection<Link> findByUserId(Long userId) {
         return jdbcTemplate.query(
             "select * from link where id in (select link_id from user_link where user_id=?)",
-            (resultSet, i) -> new Link(
-                resultSet.getLong(1),
-                URI.create(resultSet.getString(2)),
-                resultSet.getTimestamp(3).toInstant().atOffset(ZoneOffset.UTC)
-            ),
+            (resultSet, i) -> toLink(resultSet),
             userId
+        );
+    }
+
+    @Override
+    public Collection<Link> findByLastUpdateTime(Duration timeSinceLastUpdate) {
+        return jdbcTemplate.query(
+            "select * from link where last_updated < ?",
+            (resultSet, i) -> toLink(resultSet),
+            LocalDateTime.now().minus(timeSinceLastUpdate)
+        );
+    }
+
+    @Override
+    public List<Long> findByLinkId(Long id) {
+        return jdbcTemplate.queryForList("select user_id from user_link where link_id=?", Long.class, id);
+    }
+
+    private Link toLink(ResultSet resultSet) throws SQLException {
+        return new Link(
+            resultSet.getLong(1),
+            URI.create(resultSet.getString(2)),
+            resultSet.getTimestamp(3).toInstant().atOffset(ZoneOffset.UTC)
         );
     }
 
