@@ -1,5 +1,6 @@
 package edu.java.scrapper.repository;
 
+import edu.java.scrapper.exception.LinkNotTrackedException;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
 import java.sql.PreparedStatement;
@@ -27,14 +28,9 @@ public class JdbcLinkRepository implements LinkRepository {
 
     // if link is already saved, return its id, otherwise, insert it and return auto generated id
     private Long insertIfNotExists(Link link) {
-        List<Long> ids = jdbcTemplate.query(
-            "select id from link where url=?",
-            new Object[]{link.getUrl().toString()},
-            new int[] {Types.VARCHAR},
-            (resultSet, rowNum) -> resultSet.getLong("id")
-        );
-        if (!ids.isEmpty()) {
-            return ids.getFirst();
+        Long id = find(link);
+        if (id != null) {
+            return id;
         }
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -55,7 +51,13 @@ public class JdbcLinkRepository implements LinkRepository {
     }
 
     @Override
-    public void remove(Link link, User user) {
+    public Link remove(Link link, User user) {
+        Long id = find(link);
+        if (id == null) {
+            throw new LinkNotTrackedException(link.getUrl().toString());
+        }
+
+        link.setId(id);
         jdbcTemplate.update("delete from user_link where user_id=? and link_id=?", user.getId(), link.getId());
         Long count = jdbcTemplate.queryForObject(
             "select count(*) from user_link where link_id=?",
@@ -66,5 +68,16 @@ public class JdbcLinkRepository implements LinkRepository {
         if (count == 0) {
             jdbcTemplate.update("delete from link where id=?", link.getId());
         }
+        return link;
+    }
+
+    private Long find(Link link) {
+        List<Long> ids = jdbcTemplate.query(
+            "select id from link where url=?",
+            new Object[] {link.getUrl().toString()},
+            new int[] {Types.VARCHAR},
+            (resultSet, rowNum) -> resultSet.getLong("id")
+        );
+        return ids.isEmpty() ? null : ids.getFirst();
     }
 }
