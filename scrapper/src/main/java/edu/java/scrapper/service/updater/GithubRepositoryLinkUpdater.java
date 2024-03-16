@@ -27,7 +27,7 @@ public class GithubRepositoryLinkUpdater implements LinkUpdater {
 
         RepositoryResponse response = githubClient.getLastUpdateTime(info.owner(), info.name());
         if (response.updatedAt().isAfter(lastUpdatedAt)) {
-            return Optional.of("В репозитории `%s/%s` произошло обновление".formatted(info.owner(), info.name()));
+            return Optional.of("В репозитории %s произошло обновление".formatted(url));
         }
         return Optional.empty();
     }

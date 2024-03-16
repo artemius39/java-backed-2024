@@ -31,7 +31,7 @@ public class StackOverflowQuestionLinkUpdater implements LinkUpdater {
         QuestionsResponse response = stackOverflowClient.getLastModificationTime(questionId);
         QuestionResponse question = response.items().getFirst();
         if (question.lastActivityDate().isAfter(lastUpdatedAt)) {
-            return Optional.of("В вопросе `%s` произошло обновление".formatted(url));
+            return Optional.of("В вопросе %s произошло обновление".formatted(url));
         }
         return Optional.empty();
     }
