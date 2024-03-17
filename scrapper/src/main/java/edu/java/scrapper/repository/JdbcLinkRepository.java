@@ -101,6 +101,7 @@ public class JdbcLinkRepository implements LinkRepository {
         return jdbcTemplate.queryForList("select user_id from user_link where link_id=?", Long.class, id);
     }
 
+    @SuppressWarnings("MagicNumber")
     private Link toLink(ResultSet resultSet) throws SQLException {
         return new Link(
             resultSet.getLong(1),

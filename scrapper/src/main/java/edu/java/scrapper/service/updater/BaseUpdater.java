@@ -14,5 +14,6 @@ public abstract class BaseUpdater<T> implements LinkUpdater {
     }
 
     protected abstract T parseUrl(URI url);
+
     protected abstract HttpStatus testUrl(T parsedUrl);
 }

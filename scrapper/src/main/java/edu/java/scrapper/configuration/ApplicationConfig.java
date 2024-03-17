@@ -19,12 +19,12 @@ public record ApplicationConfig(
     @NotNull
     Duration updateInterval
 ) {
-    public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
-    }
-
     @Bean
     public DefaultConfigurationCustomizer configurationCustomizer() {
         return (DefaultConfiguration c) -> c.settings()
             .withRenderNameCase(RenderNameCase.LOWER);
+    }
+
+    public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
 }

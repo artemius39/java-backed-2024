@@ -33,6 +33,7 @@ public class StackOverflowAnswerLinkUpdater extends BaseUpdater<Long> {
     }
 
     @Override
+    @SuppressWarnings("MultipleStringLiterals")
     public Optional<String> tryUpdate(URI url, OffsetDateTime lastUpdatedAt) {
         Long questionId = parseUrl(url);
         if (questionId == null) {
