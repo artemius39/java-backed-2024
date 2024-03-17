@@ -3,6 +3,7 @@ package edu.java.scrapper.repository;
 import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
+import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;

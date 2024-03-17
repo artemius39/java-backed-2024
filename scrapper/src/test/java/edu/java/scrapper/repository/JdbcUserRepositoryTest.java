@@ -2,6 +2,7 @@ package edu.java.scrapper.repository;
 
 import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.model.User;
+import edu.java.scrapper.repository.jdbc.JdbcUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +38,7 @@ public class JdbcUserRepositoryTest extends IntegrationEnvironment {
         user.setId(1L);
 
         jdbcTemplate.update("insert into \"user\" (id, created_at) values (1, now())");
-        jdbcTemplate.update("insert into link (url, last_updated) values ('example.com', now())");
+        jdbcTemplate.update("insert into link (id, url, last_updated) values (1, 'example.com', now())");
         jdbcTemplate.update("insert into user_link (user_id, link_id) values (1, 1)");
         repository.remove(user);
 

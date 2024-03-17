@@ -16,7 +16,7 @@ class GithubRepositoryLinkUpdaterTest {
     @Test
     void validLinksAreSupported() {
         GithubClient client = mock(GithubClient.class);
-        when(client.testUrl("owner", "name"))
+        when(client.testRepositoryUrl("owner", "name"))
             .thenReturn(HttpStatus.valueOf(200));
         LinkUpdater updater = new GithubRepositoryLinkUpdater(client);
 
@@ -28,7 +28,7 @@ class GithubRepositoryLinkUpdaterTest {
     @Test
     void nonExistingReposAreNotSupported() {
         GithubClient client = mock(GithubClient.class);
-        when(client.testUrl("owner", "name"))
+        when(client.testRepositoryUrl("owner", "name"))
             .thenReturn(HttpStatus.valueOf(404));
         LinkUpdater updater = new GithubRepositoryLinkUpdater(client);
 
@@ -50,7 +50,7 @@ class GithubRepositoryLinkUpdaterTest {
     void emptyMessageIsReturnedOnNoUpdate() {
         OffsetDateTime now = OffsetDateTime.now();
         GithubClient client = mock(GithubClient.class);
-        when(client.testUrl("owner", "name"))
+        when(client.testRepositoryUrl("owner", "name"))
             .thenReturn(HttpStatus.valueOf(200));
         when(client.getLastUpdateTime("owner", "name"))
             .thenReturn(new RepositoryResponse(now));
@@ -62,12 +62,22 @@ class GithubRepositoryLinkUpdaterTest {
     }
 
     @Test
+    void emptyMessageIsReturnedOnUnsupportedLink() {
+        OffsetDateTime yesterday = OffsetDateTime.now().minusDays(1);
+        LinkUpdater updater = new GithubRepositoryLinkUpdater(null);
+
+        Optional<String> message = updater.tryUpdate(URI.create("https://github.com/owner/name/commits"), yesterday);
+
+        assertThat(message).isEmpty();
+    }
+
+    @Test
     void nonEmptyMessageIsReturnedOnUpdate() {
         OffsetDateTime now = OffsetDateTime.now();
         OffsetDateTime yesterday = now.minusDays(1);
 
         GithubClient client = mock(GithubClient.class);
-        when(client.testUrl("owner", "name"))
+        when(client.testRepositoryUrl("owner", "name"))
             .thenReturn(HttpStatus.valueOf(200));
         when(client.getLastUpdateTime("owner", "name"))
             .thenReturn(new RepositoryResponse(now));

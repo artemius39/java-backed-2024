@@ -1,7 +1,7 @@
 package edu.java.scrapper.service.jdbc;
 
 import edu.java.scrapper.model.User;
-import edu.java.scrapper.repository.JdbcUserRepository;
+import edu.java.scrapper.repository.jdbc.JdbcUserRepository;
 import edu.java.scrapper.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

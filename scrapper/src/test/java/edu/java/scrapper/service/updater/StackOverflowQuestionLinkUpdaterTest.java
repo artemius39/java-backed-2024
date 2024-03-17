@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -17,8 +17,8 @@ class StackOverflowQuestionLinkUpdaterTest {
     @Test
     void validQuestionsAreSupported() {
         StackOverflowClient client = mock(StackOverflowClient.class);
-        when(client.testUrl(123))
-            .thenReturn(HttpStatusCode.valueOf(200));
+        when(client.testQuestionUrl(123))
+            .thenReturn(HttpStatus.valueOf(200));
         LinkUpdater updater = new StackOverflowQuestionLinkUpdater(client);
 
         boolean supports = updater.supports(URI.create("https://stackoverflow.com/questions/123/question-title"));
@@ -57,8 +57,8 @@ class StackOverflowQuestionLinkUpdaterTest {
     @Test
     void nonExistingQuestionsAreNotSupported() {
         StackOverflowClient client = mock(StackOverflowClient.class);
-        when(client.testUrl(123))
-            .thenReturn(HttpStatusCode.valueOf(404));
+        when(client.testQuestionUrl(123))
+            .thenReturn(HttpStatus.valueOf(404));
         LinkUpdater updater = new StackOverflowQuestionLinkUpdater(client);
 
         boolean supports = updater.supports(URI.create("https://stackoverflow.com/questions/123/question-title"));
@@ -77,6 +77,15 @@ class StackOverflowQuestionLinkUpdaterTest {
         LinkUpdater updater = new StackOverflowQuestionLinkUpdater(client);
 
         Optional<String> message = updater.tryUpdate(url, yesterday);
+
+        assertThat(message).isEmpty();
+    }
+
+    @Test
+    void emptyMessageIsReturnedOnUnsupportedLink() {
+        LinkUpdater updater = new StackOverflowQuestionLinkUpdater(null);
+
+        Optional<String> message = updater.tryUpdate(URI.create("https://github.com/owner/repo"), null);
 
         assertThat(message).isEmpty();
     }

@@ -8,13 +8,14 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class GithubRepositoryLinkUpdater implements LinkUpdater {
+public class GithubRepositoryLinkUpdater extends BaseUpdater<GithubRepositoryLinkUpdater.RepositoryInfo> {
     private static final Pattern GITHUB_REPOSITORY_PATTERN =
-        Pattern.compile("https://github.com/([^/]+)/([^/]+)");
+        Pattern.compile("https://github.com/([^/]+)/([^/]+)$");
 
     private final GithubClient githubClient;
 
@@ -33,19 +34,16 @@ public class GithubRepositoryLinkUpdater implements LinkUpdater {
     }
 
     @Override
-    public boolean supports(URI url) {
-        RepositoryInfo repositoryInfo = parseUrl(url);
-        if (repositoryInfo == null) {
-            return false;
-        }
-        return githubClient.testUrl(repositoryInfo.owner(), repositoryInfo.name()).is2xxSuccessful();
+    protected HttpStatus testUrl(RepositoryInfo parsedUrl) {
+        return githubClient.testRepositoryUrl(parsedUrl.owner(), parsedUrl.name());
     }
 
-    private RepositoryInfo parseUrl(URI url) {
+    @Override
+    protected RepositoryInfo parseUrl(URI url) {
         Matcher matcher = GITHUB_REPOSITORY_PATTERN.matcher(url.toString());
         return matcher.find() ? new RepositoryInfo(matcher.group(1), matcher.group(2)) : null;
     }
 
-    private record RepositoryInfo(String owner, String name) {
+    protected record RepositoryInfo(String owner, String name) {
     }
 }
