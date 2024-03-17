@@ -131,10 +131,12 @@ class JooqLinkRepositoryTest extends IntegrationEnvironment {
             .execute();
 
         Collection<Link> links = linkRepository.findByUserId(1L);
+        // truncate because db loses precision
+        links.forEach(link -> link.setLastUpdated(link.getLastUpdated().truncatedTo(ChronoUnit.SECONDS)));
 
         assertThat(links).containsExactly(
-            new Link(1L, URI.create("example.com"), now),
-            new Link(2L, URI.create("example.org"), now)
+            new Link(1L, URI.create("example.com"), now.truncatedTo(ChronoUnit.SECONDS)),
+            new Link(2L, URI.create("example.org"), now.truncatedTo(ChronoUnit.SECONDS))
         );
     }
 
@@ -156,8 +158,13 @@ class JooqLinkRepositoryTest extends IntegrationEnvironment {
             .execute();
 
         Collection<Link> links = linkRepository.findByLastUpdateTime(Duration.of(1, ChronoUnit.DAYS));
+        // truncate because db loses precision
+        links.forEach(link -> link.setLastUpdated(link.getLastUpdated().truncatedTo(ChronoUnit.SECONDS)));
 
-        assertThat(links).containsExactly(new Link(2L, URI.create("example.org"), oldEnough));
+        assertThat(links).containsExactly(new Link(
+                2L, URI.create("example.org"),
+                oldEnough.truncatedTo(ChronoUnit.SECONDS)
+        ));
     }
 
     @Test

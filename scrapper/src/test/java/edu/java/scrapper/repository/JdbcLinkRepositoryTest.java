@@ -102,10 +102,12 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         jdbcTemplate.update("insert into user_link (user_id, link_id) values (1, 1), (1, 2), (2, 3)");
 
         Collection<Link> links = linkRepository.findByUserId(1L);
+        // truncate because db loses precision
+        links.forEach(link -> link.setLastUpdated(link.getLastUpdated().truncatedTo(ChronoUnit.SECONDS)));
 
         assertThat(links).containsExactly(
-            new Link(1L, URI.create("example.com"), time),
-            new Link(2L, URI.create("example.org"), time)
+            new Link(1L, URI.create("example.com"), time.truncatedTo(ChronoUnit.SECONDS)),
+            new Link(2L, URI.create("example.org"), time.truncatedTo(ChronoUnit.SECONDS))
         );
     }
 
@@ -122,8 +124,13 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         );
 
         Collection<Link> links = linkRepository.findByLastUpdateTime(Duration.of(1, ChronoUnit.DAYS));
+        // truncate because db loses precision
+        links.forEach(link -> link.setLastUpdated(link.getLastUpdated().truncatedTo(ChronoUnit.SECONDS)));
 
-        assertThat(links).containsExactly(new Link(2L, URI.create("example.org"), oldEnough));
+        assertThat(links).containsExactly(new Link(
+            2L, URI.create("example.org"),
+            oldEnough.truncatedTo(ChronoUnit.SECONDS)
+        ));
     }
 
     @Test
