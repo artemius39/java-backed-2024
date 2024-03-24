@@ -1,5 +1,6 @@
 package edu.java.scrapper.repository;
 
+import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-abstract class UserRepositoryTest {
+abstract class UserRepositoryTest extends IntegrationEnvironment {
     @Autowired
     private JdbcClient jdbcClient;
 
