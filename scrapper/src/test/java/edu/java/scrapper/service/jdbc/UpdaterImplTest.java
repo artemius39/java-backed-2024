@@ -42,7 +42,7 @@ class UpdaterImplTest {
 
         ScrapperClient client = mock(ScrapperClient.class);
 
-        ApplicationConfig config = new ApplicationConfig(null, Duration.of(1, ChronoUnit.MINUTES), null);
+        ApplicationConfig config = new ApplicationConfig(null, Duration.of(1, ChronoUnit.MINUTES));
 
         Updater updater = new UpdaterImpl(List.of(updater1, updater2), linkRepository, client, config);
 
@@ -68,7 +68,7 @@ class UpdaterImplTest {
 
         ScrapperClient client = mock(ScrapperClient.class);
 
-        ApplicationConfig config = new ApplicationConfig(null, Duration.of(1, ChronoUnit.MINUTES), null);
+        ApplicationConfig config = new ApplicationConfig(null, Duration.of(1, ChronoUnit.MINUTES));
 
         Updater updater = new UpdaterImpl(List.of(updater1, updater2), linkRepository, client, config);
 

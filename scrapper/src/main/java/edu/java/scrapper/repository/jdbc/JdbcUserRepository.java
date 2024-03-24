@@ -6,10 +6,14 @@ import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
+@Repository
+@Primary
 @AllArgsConstructor
 public class JdbcUserRepository implements UserRepository {
     private final JdbcClient jdbcClient;

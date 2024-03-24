@@ -17,10 +17,7 @@ public record ApplicationConfig(
     Scheduler scheduler,
 
     @NotNull
-    Duration updateInterval,
-
-    @NotNull
-    AccessType databaseDefaultType
+    Duration updateInterval
 ) {
     @Bean
     public DefaultConfigurationCustomizer configurationCustomizer() {
@@ -29,9 +26,5 @@ public record ApplicationConfig(
     }
 
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
-    }
-
-    public enum AccessType {
-        JDBC, JPA, JOOQ
     }
 }

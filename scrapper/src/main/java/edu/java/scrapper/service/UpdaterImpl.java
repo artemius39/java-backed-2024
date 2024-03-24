@@ -11,7 +11,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @AllArgsConstructor
 public class UpdaterImpl implements Updater {
     private final List<LinkUpdater> updaters;
