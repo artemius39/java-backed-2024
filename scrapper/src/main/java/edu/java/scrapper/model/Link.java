@@ -18,4 +18,8 @@ public class Link {
         this.url = url;
     }
 
+    public Link(Long id, URI url) {
+        this.id = id;
+        this.url = url;
+    }
 }

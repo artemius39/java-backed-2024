@@ -2,51 +2,49 @@ package edu.java.scrapper.repository.jdbc;
 
 import edu.java.scrapper.model.User;
 import edu.java.scrapper.repository.UserRepository;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.ZoneOffset;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import lombok.AllArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Primary
 @AllArgsConstructor
 public class JdbcUserRepository implements UserRepository {
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcClient jdbcClient;
 
     @Override
-    public User add(User user) {
+    public User find(long id) {
+        return jdbcClient.sql("select * from \"user\" where id=?")
+            .param(id)
+            .query(User.class)
+            .optional()
+            .orElse(null);
+    }
+
+    @Override
+    public User add(long id) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        jdbcTemplate.update(
-            connection -> {
-                PreparedStatement preparedStatement = connection.prepareStatement(
-                    "insert into \"user\" (id, created_at) values (?, now())",
-                    Statement.RETURN_GENERATED_KEYS
-                );
-                preparedStatement.setLong(1, user.getId());
-                return preparedStatement;
-            },
-            keyHolder
-        );
-
+        jdbcClient.sql("insert into \"user\" (id, created_at) values (?, now())")
+            .param(id)
+            .update(keyHolder);
         Map<String, Object> keys = keyHolder.getKeys();
         assert keys != null;
         Timestamp timestamp = (Timestamp) keys.get("created_at");
-        user.setCreatedAt(timestamp.toLocalDateTime().atOffset(ZoneOffset.UTC));
-        return user;
+        return new User(id, timestamp.toInstant().atOffset(OffsetDateTime.now().getOffset()));
     }
 
     @Override
-    @Transactional
-    public void remove(User user) {
-        jdbcTemplate.update("delete from user_link where user_id=?", user.getId());
-        jdbcTemplate.update("delete from link where id not in (select distinct link_id from user_link)");
-        jdbcTemplate.update("delete from \"user\" where id=?", user.getId());
+    public void remove(long id) {
+        jdbcClient.sql("delete from \"user\" where id=?")
+            .param(id)
+            .update();
     }
+
+
 }

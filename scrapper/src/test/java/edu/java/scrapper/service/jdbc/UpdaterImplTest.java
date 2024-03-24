@@ -6,6 +6,7 @@ import edu.java.scrapper.dto.bot.LinkUpdateRequest;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.service.Updater;
+import edu.java.scrapper.service.UpdaterImpl;
 import edu.java.scrapper.service.updater.LinkUpdater;
 import java.net.URI;
 import java.time.Duration;
@@ -16,12 +17,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class JdbcUpdaterTest {
+class UpdaterImplTest {
     @Test
     void updateIsSentIfLinkHasUpdate() {
         URI url = URI.create("example.com");
@@ -33,19 +35,22 @@ class JdbcUpdaterTest {
         when(updater2.tryUpdate(any(), any())).thenReturn(Optional.of("Link updated"));
 
         JdbcLinkRepository linkRepository = mock(JdbcLinkRepository.class);
-        when(linkRepository.findByLastUpdateTime(any())).thenReturn(List.of(link));
-        when(linkRepository.findByLinkId(1L)).thenReturn(List.of(1L, 2L, 3L));
+        when(linkRepository.findByLastUpdateTime(any()))
+            .thenReturn(List.of(link));
+        when(linkRepository.findUserIdsByLinkId(1L))
+            .thenReturn(List.of(1L, 2L, 3L));
 
         ScrapperClient client = mock(ScrapperClient.class);
 
         ApplicationConfig config = new ApplicationConfig(null, Duration.of(1, ChronoUnit.MINUTES));
 
-        Updater updater = new JdbcUpdater(List.of(updater1, updater2), linkRepository, client, config);
+        Updater updater = new UpdaterImpl(List.of(updater1, updater2), linkRepository, client, config);
 
         int result = updater.update();
 
         assertThat(result).isOne();
         verify(client).sendUpdate(new LinkUpdateRequest(1L, url, "Link updated", List.of(1L, 2L, 3L)));
+        verify(linkRepository).update(eq(link), any());
     }
 
     @Test
@@ -65,11 +70,11 @@ class JdbcUpdaterTest {
 
         ApplicationConfig config = new ApplicationConfig(null, Duration.of(1, ChronoUnit.MINUTES));
 
-        Updater updater = new JdbcUpdater(List.of(updater1, updater2), linkRepository, client, config);
+        Updater updater = new UpdaterImpl(List.of(updater1, updater2), linkRepository, client, config);
 
         int result = updater.update();
 
         assertThat(result).isZero();
-        verify(client, times(0)).sendUpdate(any());
+        verify(client, never()).sendUpdate(any());
     }
 }

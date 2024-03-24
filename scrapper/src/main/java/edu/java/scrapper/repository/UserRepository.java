@@ -3,7 +3,9 @@ package edu.java.scrapper.repository;
 import edu.java.scrapper.model.User;
 
 public interface UserRepository {
-    User add(User user);
+    User find(long id);
 
-    void remove(User user);
+    User add(long id);
+
+    void remove(long id);
 }
