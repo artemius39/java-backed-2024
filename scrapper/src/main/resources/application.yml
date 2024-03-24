@@ -4,6 +4,7 @@ app:
     interval: 10s
     force-check-delay: 10s
   update-interval: 1m
+  database-default-type: jpa
 
 client:
   github:
@@ -23,6 +24,8 @@ spring:
     password: postgres
   liquibase:
     enabled: false
+  jpa:
+    show-sql: true
 
 server:
   port: 8080
