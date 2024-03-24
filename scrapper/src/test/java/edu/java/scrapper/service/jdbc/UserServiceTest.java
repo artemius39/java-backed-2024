@@ -8,13 +8,11 @@ import edu.java.scrapper.repository.UserRepository;
 import edu.java.scrapper.service.UserService;
 import edu.java.scrapper.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 class UserServiceTest {
     @Test
     void newUserIsRegisteredSuccessfully() {
