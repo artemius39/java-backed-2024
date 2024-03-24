@@ -1,6 +1,6 @@
 package edu.java.scrapper.client;
 
-import edu.java.scrapper.model.stackoverflow.QuestionsResponse;
+import edu.java.scrapper.dto.stackoverflow.QuestionsResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;
 
