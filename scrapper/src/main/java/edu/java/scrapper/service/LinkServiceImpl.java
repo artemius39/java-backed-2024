@@ -11,12 +11,8 @@ import edu.java.scrapper.repository.LinkRepository;
 import edu.java.scrapper.repository.UserRepository;
 import java.net.URI;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Primary
 @AllArgsConstructor
 public class LinkServiceImpl implements LinkService {
     private final LinkRepository linkRepository;
