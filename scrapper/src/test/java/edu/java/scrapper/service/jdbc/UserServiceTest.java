@@ -1,5 +1,6 @@
 package edu.java.scrapper.service.jdbc;
 
+import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.exception.ChatNotFoundException;
 import edu.java.scrapper.exception.UserAlreadyRegisteredException;
 import edu.java.scrapper.model.User;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class UserServiceTest {
+class UserServiceTest extends IntegrationEnvironment {
     @Test
     void newUserIsRegisteredSuccessfully() {
         UserRepository userRepository = mock(UserRepository.class);
