@@ -1,11 +1,10 @@
-package edu.java.scrapper.service.jdbc;
+package edu.java.scrapper.service;
 
 import edu.java.scrapper.client.ScrapperClient;
 import edu.java.scrapper.configuration.ApplicationConfig;
 import edu.java.scrapper.dto.bot.LinkUpdateRequest;
 import edu.java.scrapper.model.Link;
-import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
-import edu.java.scrapper.service.Updater;
+import edu.java.scrapper.repository.LinkRepository;
 import edu.java.scrapper.service.updater.LinkUpdater;
 import java.time.OffsetDateTime;
 import java.util.Collection;
@@ -16,9 +15,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class JdbcUpdater implements Updater {
+public class UpdaterImpl implements Updater {
     private final List<LinkUpdater> updaters;
-    private final JdbcLinkRepository linkRepository;
+    private final LinkRepository linkRepository;
     private final ScrapperClient scrapperClient;
     private final ApplicationConfig applicationConfig;
 
@@ -43,8 +42,9 @@ public class JdbcUpdater implements Updater {
             link.getId(),
             link.getUrl(),
             message.get(),
-            linkRepository.findByLinkId(link.getId())
+            linkRepository.findUserIdsByLinkId(link.getId())
         ));
+        linkRepository.update(link, OffsetDateTime.now());
         return 1;
     }
 }

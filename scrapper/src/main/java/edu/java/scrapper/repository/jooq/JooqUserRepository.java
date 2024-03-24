@@ -6,10 +6,7 @@ import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import static edu.java.scrapper.model.jooq.Tables.LINK;
 import static edu.java.scrapper.model.jooq.Tables.USER;
-import static edu.java.scrapper.model.jooq.Tables.USER_LINK;
 
 @Repository
 @AllArgsConstructor
@@ -17,7 +14,15 @@ public class JooqUserRepository implements UserRepository {
     private final DSLContext dslContext;
 
     @Override
-    public User add(User user) {
+    public User find(long id) {
+        return dslContext.selectFrom(USER)
+            .where(USER.ID.eq(id))
+            .fetchAnyInto(User.class);
+    }
+
+    @Override
+    public User add(long id) {
+        User user = new User(id);
         OffsetDateTime now = OffsetDateTime.now();
         dslContext.insertInto(USER)
             .set(USER.ID, user.getId())
@@ -28,20 +33,9 @@ public class JooqUserRepository implements UserRepository {
     }
 
     @Override
-    @Transactional
-    public void remove(User user) {
-        dslContext.deleteFrom(USER_LINK)
-            .where(USER_LINK.USER_ID.eq(user.getId()))
-            .execute();
-        dslContext.deleteFrom(LINK)
-            .where(LINK.ID.notIn(
-                dslContext.selectDistinct(USER_LINK.LINK_ID)
-                    .from(USER_LINK)
-                    .where(USER_LINK.LINK_ID.eq(LINK.ID))
-            ))
-            .execute();
+    public void remove(long id) {
         dslContext.deleteFrom(USER)
-            .where(USER.ID.eq(user.getId()))
+            .where(USER.ID.eq(id))
             .execute();
     }
 }
