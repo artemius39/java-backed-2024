@@ -44,7 +44,7 @@ public class JpaUpdater implements Updater {
             link.getId(),
             URI.create(link.getUrl()),
             message.get(),
-            userRepository.findUsersByLinksContains(link)
+            userRepository.findUsersByLink(link.getId())
         ));
         link.setUpdatedAt(OffsetDateTime.now());
         linkRepository.save(link);
