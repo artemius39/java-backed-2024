@@ -9,12 +9,17 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "link")
-@Data
+@Getter
+@Setter
+@ToString
 public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -28,5 +33,25 @@ public class Link {
     private OffsetDateTime updatedAt;
 
     @ManyToMany(mappedBy = "links")
+    @ToString.Exclude
     private Set<User> users = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Link link = (Link) o;
+        return Objects.equals(id, link.id)
+               && Objects.equals(url, link.url)
+               && Objects.equals(updatedAt.toInstant(), link.updatedAt.toInstant());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, url, updatedAt);
+    }
 }

@@ -10,13 +10,15 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Generated;
 
 @Entity
 @Table(name = "`user`")
-@Data
+@Getter @Setter
 public class User {
     @Id
     @Column(name = "id")
@@ -33,4 +35,22 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "link_id")
     )
     private Set<Link> links = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(id, user.id)
+               && Objects.equals(createdAt.toInstant(), user.createdAt.toInstant());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, createdAt);
+    }
 }
