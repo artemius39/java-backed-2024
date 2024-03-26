@@ -46,7 +46,8 @@ public class User {
         }
         User user = (User) o;
         return Objects.equals(id, user.id)
-               && Objects.equals(createdAt.toInstant(), user.createdAt.toInstant());
+               && (createdAt == null && user.createdAt == null
+                   || createdAt != null && Objects.equals(createdAt.toInstant(), user.createdAt.toInstant()));
     }
 
     @Override
