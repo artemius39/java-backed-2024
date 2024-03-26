@@ -25,9 +25,12 @@ public class JpaLinkService implements LinkService {
         User user = userRepository.findById(chatId)
             .orElseThrow(() -> new ChatNotFoundException(chatId));
 
-        Link link = new Link();
-        link.setUrl(url.toString());
-        link = linkRepository.save(link);
+        Link link = linkRepository.findByUrl(url.toString())
+            .orElseGet(() -> {
+                Link newLink = new Link();
+                newLink.setUrl(url.toString());
+                return linkRepository.save(newLink);
+            });
 
         if (!user.getLinks().add(link)) {
             throw new LinkAlreadyTrackedException(url, chatId);
