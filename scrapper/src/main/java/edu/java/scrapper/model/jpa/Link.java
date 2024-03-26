@@ -47,8 +47,8 @@ public class Link {
         Link link = (Link) o;
         return Objects.equals(id, link.id)
                && Objects.equals(url, link.url)
-               && (updatedAt == null && link.updatedAt == null ||
-                   updatedAt != null && Objects.equals(updatedAt.toInstant(), link.updatedAt.toInstant()));
+               && (updatedAt == null && link.updatedAt == null
+                   || updatedAt != null && Objects.equals(updatedAt.toInstant(), link.updatedAt.toInstant()));
     }
 
     @Override
