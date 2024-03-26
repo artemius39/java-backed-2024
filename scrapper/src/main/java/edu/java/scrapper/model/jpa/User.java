@@ -9,6 +9,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -47,7 +48,11 @@ public class User {
         User user = (User) o;
         return Objects.equals(id, user.id)
                && (createdAt == null && user.createdAt == null
-                   || createdAt != null && Objects.equals(createdAt.toInstant(), user.createdAt.toInstant()));
+                   || createdAt != null
+                      && Objects.equals(
+            createdAt.toInstant().truncatedTo(ChronoUnit.SECONDS),
+            user.createdAt.toInstant().truncatedTo(ChronoUnit.SECONDS)
+        ));
     }
 
     @Override

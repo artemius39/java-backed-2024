@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -48,7 +49,10 @@ public class Link {
         return Objects.equals(id, link.id)
                && Objects.equals(url, link.url)
                && (updatedAt == null && link.updatedAt == null
-                   || updatedAt != null && Objects.equals(updatedAt.toInstant(), link.updatedAt.toInstant()));
+                   || updatedAt != null && Objects.equals(
+            updatedAt.toInstant().truncatedTo(ChronoUnit.SECONDS),
+            link.updatedAt.toInstant().truncatedTo(ChronoUnit.SECONDS)
+        ));
     }
 
     @Override
