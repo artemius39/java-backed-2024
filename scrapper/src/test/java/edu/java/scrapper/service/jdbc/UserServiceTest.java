@@ -1,6 +1,5 @@
 package edu.java.scrapper.service.jdbc;
 
-import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.scrapper.exception.ChatNotFoundException;
 import edu.java.scrapper.exception.UserAlreadyRegisteredException;
 import edu.java.scrapper.model.User;
@@ -9,14 +8,12 @@ import edu.java.scrapper.repository.UserRepository;
 import edu.java.scrapper.service.UserService;
 import edu.java.scrapper.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-class UserServiceTest extends IntegrationEnvironment {
+class UserServiceTest {
     @Test
     void newUserIsRegisteredSuccessfully() {
         UserRepository userRepository = mock(UserRepository.class);
