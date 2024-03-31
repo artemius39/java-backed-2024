@@ -70,7 +70,9 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(ApiRequestRateExceededException.class)
-    protected ResponseEntity<ApiErrorResponse> handleApiRequestRateExceededException(ApiRequestRateExceededException e) {
+    protected ResponseEntity<ApiErrorResponse> handleApiRequestRateExceededException(
+        ApiRequestRateExceededException e
+    ) {
         ApiErrorResponse response = new ApiErrorResponse("Too many API requests", TOO_MANY_REQUESTS, e);
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(response);
     }

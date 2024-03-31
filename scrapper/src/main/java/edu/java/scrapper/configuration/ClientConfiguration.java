@@ -115,20 +115,20 @@ public class ClientConfiguration {
             policy.initialInterval,
             policy.increment,
             e -> filter(e, policy),
-            ($, retrySignal) -> retrySignal.failure()
+            (retry, retrySignal) -> retrySignal.failure()
         );
     }
 
     private Retry exponentialRetry(RetryPolicy policy) {
         return Retry.backoff(policy.maxAttempts, Duration.ofMillis(policy.multiplier))
             .filter(e -> filter(e, policy))
-            .onRetryExhaustedThrow(($, retrySignal) -> retrySignal.failure());
+            .onRetryExhaustedThrow((retry, retrySignal) -> retrySignal.failure());
     }
 
     private Retry constantRetry(RetryPolicy policy) {
         return Retry.fixedDelay(policy.maxAttempts, Duration.ofSeconds(policy.backoffPeriod))
             .filter(e -> filter(e, policy))
-            .onRetryExhaustedThrow(($, retrySignal) -> retrySignal.failure());
+            .onRetryExhaustedThrow((retry, retrySignal) -> retrySignal.failure());
     }
 
     private boolean filter(Throwable e, RetryPolicy policy) {
