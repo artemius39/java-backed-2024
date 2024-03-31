@@ -15,12 +15,16 @@ client:
         initial-interval: 1
         increment: 10
         max-attempts: 10
+        retry-on-codes:
+          - 429
     stackoverflow:
       base-url: https://api.stackexchange.com
       retry-policy:
         type: constant
         backoff-period: 10
         max-attempts: 100
+        retry-on-codes:
+          - 429
     scrapper:
       base-url: http://localhost:8090
       retry-policy:
@@ -28,6 +32,8 @@ client:
         initial-interval: 1
         multiplier: 2
         max-attemtps: 10
+        retry-on-codes:
+          - 429
 
 spring:
   application:

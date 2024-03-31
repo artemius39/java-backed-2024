@@ -2,13 +2,11 @@ package edu.java.scrapper.client;
 
 import edu.java.scrapper.dto.stackoverflow.AnswerResponse;
 import edu.java.scrapper.dto.stackoverflow.QuestionsResponse;
-import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 
-@Retry(name = "retryStackOverflow")
 public interface StackOverflowClient {
     @GetExchange("/2.3/questions/{questionId}?order=desc&sort=activity&site=stackoverflow")
     QuestionsResponse getLastModificationTime(@PathVariable long questionId);

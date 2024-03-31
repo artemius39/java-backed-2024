@@ -2,13 +2,11 @@ package edu.java.scrapper.client;
 
 import edu.java.scrapper.dto.github.CommitsResponse;
 import edu.java.scrapper.dto.github.RepositoryResponse;
-import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 
-@Retry(name = "retryGithub")
 public interface GithubClient {
     @GetExchange("/repos/{repositoryOwner}/{repositoryName}")
     RepositoryResponse getLastUpdateTime(@PathVariable String repositoryOwner, @PathVariable String repositoryName);

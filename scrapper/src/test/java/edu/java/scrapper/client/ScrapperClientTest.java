@@ -20,6 +20,9 @@ public class ScrapperClientTest {
         configuration = new ClientConfiguration();
         ClientConfiguration.ClientConfig config = new ClientConfiguration.ClientConfig();
         config.setBaseUrl("http://localhost:8080");
+        ClientConfiguration.RetryPolicy policy = new ClientConfiguration.RetryPolicy();
+        policy.setType(ClientConfiguration.RetryPolicy.Type.NONE);
+        config.setRetryPolicy(policy);
         configuration.setClients(Map.of("scrapper", config));
     }
 
