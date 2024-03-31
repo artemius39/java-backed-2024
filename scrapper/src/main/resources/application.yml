@@ -35,6 +35,11 @@ client:
         retry-on-codes:
           - 429
 
+ratelimit:
+  capacity: 1000
+  refill-rate: 100
+  initial-tokens: 1000
+
 spring:
   application:
     name: scrapper

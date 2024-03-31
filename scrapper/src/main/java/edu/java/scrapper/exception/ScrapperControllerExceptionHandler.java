@@ -14,6 +14,7 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
 
     private static final String BAD_REQUEST = "400";
     private static final String NOT_FOUND = "404";
+    private static final String TOO_MANY_REQUESTS = "429";
 
     @ExceptionHandler(UserAlreadyRegisteredException.class)
     protected ResponseEntity<ApiErrorResponse> handleUserAlreadyRegisteredException(UserAlreadyRegisteredException e) {
@@ -66,5 +67,11 @@ public class ScrapperControllerExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<ApiErrorResponse> handleLinkNotTrackedException(LinkNotTrackedException e) {
         ApiErrorResponse response = new ApiErrorResponse("Link not tracked", NOT_FOUND, e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(ApiRequestRateExceededException.class)
+    protected ResponseEntity<ApiErrorResponse> handleApiRequestRateExceededException(ApiRequestRateExceededException e) {
+        ApiErrorResponse response = new ApiErrorResponse("Too many API requests", TOO_MANY_REQUESTS, e);
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(response);
     }
 }
