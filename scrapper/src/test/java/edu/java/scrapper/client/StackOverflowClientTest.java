@@ -7,6 +7,7 @@ import edu.java.scrapper.dto.stackoverflow.QuestionsResponse;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
@@ -15,11 +16,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @WireMockTest(httpPort = 8080)
 class StackOverflowClientTest {
-    ClientConfiguration configuration = new ClientConfiguration();
+    private final ClientConfiguration configuration;
+
+    {
+        configuration = new ClientConfiguration();
+        ClientConfiguration.ClientConfig config = new ClientConfiguration.ClientConfig();
+        config.setBaseUrl("http://localhost:8080");
+        configuration.setClients(Map.of("stackoverflow", config));
+    }
 
     @Test
     void timeIsParsedCorrectly() {
-        StackOverflowClient client = configuration.stackOverflowClient("http://localhost:8080");
+        StackOverflowClient client = configuration.stackOverflowClient();
         stubFor(get("/2.3/questions/123?order=desc&sort=activity&site=stackoverflow").willReturn(okJson(
             """
                 {
@@ -40,7 +48,7 @@ class StackOverflowClientTest {
 
     @Test
     void unknownFieldsAreIgnored() {
-        StackOverflowClient client = configuration.stackOverflowClient("http://localhost:8080");
+        StackOverflowClient client = configuration.stackOverflowClient();
         stubFor(get("/2.3/questions/123?order=desc&sort=activity&site=stackoverflow").willReturn(okJson(
             """
                 {
