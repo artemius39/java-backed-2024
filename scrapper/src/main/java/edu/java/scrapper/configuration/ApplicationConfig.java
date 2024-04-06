@@ -23,7 +23,9 @@ public record ApplicationConfig(
     AccessType databaseDefaultType,
 
     @NotNull
-    Topic updatesTopic
+    Topic updatesTopic,
+
+    boolean useQueue
 ) {
     @Bean
     public DefaultConfigurationCustomizer configurationCustomizer() {

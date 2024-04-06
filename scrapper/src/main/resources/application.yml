@@ -9,6 +9,7 @@ app:
     name: updates
     replicas: 1
     partitions: 1
+  use-queue: true
 
 client:
   # noinspection SpringBootApplicationYaml
@@ -59,7 +60,7 @@ spring:
     show-sql: true
   kafka:
     producer:
-      key-serializer: org.springframework.kafka.support.serializer.StringSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
       bootstrap-servers: localhost:9092
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:

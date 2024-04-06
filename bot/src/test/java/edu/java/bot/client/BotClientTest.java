@@ -16,7 +16,7 @@ public class BotClientTest {
     @Test
     void errorsAreHandled() {
         BotClient client = new ClientConfiguration().botClient("http://localhost:8080");
-        stubFor(post("/links").willReturn(jsonResponse("""
+        stubFor(post("/links?Tg-Chat-Id=1").willReturn(jsonResponse("""
                                 {
                                     "description": "stub exception",
                                     "code": "400",
@@ -26,6 +26,6 @@ public class BotClientTest {
                                 }""", 400)));
         AddLinkRequest request = new AddLinkRequest(null);
 
-        assertThrows(ApiException.class, () -> client.addLink(request));
+        assertThrows(ApiException.class, () -> client.addLink(request, 1));
     }
 }
