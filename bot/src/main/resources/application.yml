@@ -10,6 +10,16 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  kafka:
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            value.default.type: edu.java.bot.dto.request.LinkUpdateRequest
+            trusted.packages: edu.java.dto
+      bootstrap-servers: localhost:9092
+      group-id: main
 
 server:
   port: 8090

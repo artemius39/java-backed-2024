@@ -1,11 +1,11 @@
 package edu.java.scrapper.service.jpa;
 
-import edu.java.scrapper.client.ScrapperClient;
 import edu.java.scrapper.configuration.ApplicationConfig;
 import edu.java.scrapper.dto.bot.LinkUpdateRequest;
 import edu.java.scrapper.model.jpa.Link;
 import edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import edu.java.scrapper.repository.jpa.JpaUserRepository;
+import edu.java.scrapper.service.BotUpdateSender;
 import edu.java.scrapper.service.JpaUpdater;
 import edu.java.scrapper.service.Updater;
 import edu.java.scrapper.service.updater.LinkUpdater;
@@ -45,13 +45,15 @@ class JpaUpdaterTest {
         JpaUserRepository userRepository = mock(JpaUserRepository.class);
         when(userRepository.findUsersByLink(1L))
             .thenReturn(List.of(1L, 2L, 3L));
-        ScrapperClient client = mock(ScrapperClient.class);
-        ApplicationConfig config = new ApplicationConfig(null, Duration.of(1, ChronoUnit.MINUTES), null);
+        BotUpdateSender updateSender = mock(BotUpdateSender.class);
+        ApplicationConfig config = mock(ApplicationConfig.class);
+        when(config.updateInterval())
+            .thenReturn(Duration.of(1, ChronoUnit.MINUTES));
 
         Updater updater = new JpaUpdater(
             List.of(updater1, updater2),
             linkRepository,
-            client,
+            updateSender,
             config,
             userRepository
         );
@@ -59,7 +61,7 @@ class JpaUpdaterTest {
         int result = updater.update();
 
         assertThat(result).isOne();
-        verify(client).sendUpdate(new LinkUpdateRequest(1L, url, "Link updated", List.of(1L, 2L, 3L)));
+        verify(updateSender).send(new LinkUpdateRequest(1L, url, "Link updated", List.of(1L, 2L, 3L)));
         verify(linkRepository).save(any());
     }
 
@@ -83,13 +85,15 @@ class JpaUpdaterTest {
         JpaUserRepository userRepository = mock(JpaUserRepository.class);
         when(userRepository.findUsersByLink(1L))
             .thenReturn(List.of(1L, 2L, 3L));
-        ScrapperClient client = mock(ScrapperClient.class);
-        ApplicationConfig config = new ApplicationConfig(null, Duration.of(1, ChronoUnit.MINUTES), null);
+        BotUpdateSender botUpdateSender = mock(BotUpdateSender.class);
+        ApplicationConfig config = mock(ApplicationConfig.class);
+        when(config.updateInterval())
+            .thenReturn(Duration.of(1, ChronoUnit.MINUTES));
 
         Updater updater = new JpaUpdater(
             List.of(updater1, updater2),
             linkRepository,
-            client,
+            botUpdateSender,
             config,
             userRepository
         );
@@ -97,7 +101,7 @@ class JpaUpdaterTest {
         int result = updater.update();
 
         assertThat(result).isZero();
-        verify(client, never()).sendUpdate(any());
+        verify(botUpdateSender, never()).send(any());
         verify(linkRepository, never()).save(any());
     }
 }

@@ -1,6 +1,5 @@
 package edu.java.scrapper.service;
 
-import edu.java.scrapper.client.ScrapperClient;
 import edu.java.scrapper.configuration.ApplicationConfig;
 import edu.java.scrapper.dto.bot.LinkUpdateRequest;
 import edu.java.scrapper.model.Link;
@@ -16,7 +15,7 @@ import lombok.AllArgsConstructor;
 public class UpdaterImpl implements Updater {
     private final List<LinkUpdater> updaters;
     private final LinkRepository linkRepository;
-    private final ScrapperClient scrapperClient;
+    private final BotUpdateSender botUpdateSender;
     private final ApplicationConfig applicationConfig;
 
     @Override
@@ -36,7 +35,7 @@ public class UpdaterImpl implements Updater {
         if (message.isEmpty()) {
             return 0;
         }
-        scrapperClient.sendUpdate(new LinkUpdateRequest(
+        botUpdateSender.send(new LinkUpdateRequest(
             link.getId(),
             link.getUrl(),
             message.get(),

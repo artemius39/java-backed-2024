@@ -1,8 +1,8 @@
 package edu.java.scrapper.configuration;
 
-import edu.java.scrapper.client.ScrapperClient;
 import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.repository.jdbc.JdbcUserRepository;
+import edu.java.scrapper.service.BotUpdateSender;
 import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.LinkServiceImpl;
 import edu.java.scrapper.service.Updater;
@@ -43,9 +43,9 @@ public class JdbcAccessConfiguration {
     public Updater jdbcUpdater(
         JdbcLinkRepository linkRepository,
         List<LinkUpdater> updaters,
-        ScrapperClient scrapperClient,
+        BotUpdateSender botUpdateSender,
         ApplicationConfig applicationConfig
     ) {
-        return new UpdaterImpl(updaters, linkRepository, scrapperClient, applicationConfig);
+        return new UpdaterImpl(updaters, linkRepository, botUpdateSender, applicationConfig);
     }
 }

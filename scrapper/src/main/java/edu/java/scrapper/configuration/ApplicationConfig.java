@@ -20,7 +20,10 @@ public record ApplicationConfig(
     Duration updateInterval,
 
     @NotNull
-    AccessType databaseDefaultType
+    AccessType databaseDefaultType,
+
+    @NotNull
+    Topic updatesTopic
 ) {
     @Bean
     public DefaultConfigurationCustomizer configurationCustomizer() {
@@ -33,5 +36,8 @@ public record ApplicationConfig(
 
     public enum AccessType {
         JDBC, JPA, JOOQ
+    }
+
+    public record Topic(String name, int replicas, int partitions) {
     }
 }
