@@ -50,7 +50,7 @@ public class BotServiceImpl implements BotService {
 
     private String getCommandArguments(String messageText, String commandName) {
         if (commandName.length() == messageText.length()) {
-            return messageText;
+            return "";
         } else {
             return messageText.substring(commandName.length() + 1);
         }
