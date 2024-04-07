@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 
 @AllArgsConstructor
-public class KafkaBotUpdateSender implements BotUpdateSender{
+public class KafkaBotUpdateSender implements BotUpdateSender {
     private final KafkaTemplate<String, LinkUpdateRequest> kafkaTemplate;
 
     @Override
