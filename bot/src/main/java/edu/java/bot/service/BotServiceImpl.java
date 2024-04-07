@@ -49,7 +49,11 @@ public class BotServiceImpl implements BotService {
     }
 
     private String getCommandArguments(String messageText, String commandName) {
-        return messageText.substring(Math.min(messageText.length(), commandName.length() + 1));
+        if (commandName.length() == messageText.length()) {
+            return messageText;
+        } else {
+            return messageText.substring(commandName.length() + 1);
+        }
     }
 
     private String getCommandName(String messageText) {
