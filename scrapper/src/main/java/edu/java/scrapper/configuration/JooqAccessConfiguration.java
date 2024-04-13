@@ -1,8 +1,8 @@
 package edu.java.scrapper.configuration;
 
-import edu.java.scrapper.client.ScrapperClient;
 import edu.java.scrapper.repository.jooq.JooqLinkRepository;
 import edu.java.scrapper.repository.jooq.JooqUserRepository;
+import edu.java.scrapper.service.BotUpdateSender;
 import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.LinkServiceImpl;
 import edu.java.scrapper.service.Updater;
@@ -43,9 +43,9 @@ public class JooqAccessConfiguration {
     public Updater jooqUpdater(
         JooqLinkRepository linkRepository,
         List<LinkUpdater> updaters,
-        ScrapperClient scrapperClient,
+        BotUpdateSender botUpdateSender,
         ApplicationConfig applicationConfig
     ) {
-        return new UpdaterImpl(updaters, linkRepository, scrapperClient, applicationConfig);
+        return new UpdaterImpl(updaters, linkRepository, botUpdateSender, applicationConfig);
     }
 }

@@ -5,8 +5,14 @@ app:
     force-check-delay: 10s
   update-interval: 1m
   database-default-type: jpa
+  updates-topic:
+    name: updates
+    replicas: 1
+    partitions: 1
+  use-queue: true
 
 client:
+  # noinspection SpringBootApplicationYaml
   clients:
     github:
       base-url: https://api.github.com
@@ -31,7 +37,7 @@ client:
         type: exponential
         initial-interval: 1
         multiplier: 2
-        max-attemtps: 10
+        max-attempts: 10
         retry-on-codes:
           - 429
 
@@ -52,7 +58,16 @@ spring:
     enabled: false
   jpa:
     show-sql: true
-
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: localhost:9092
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            value.default.type: edu.java.scrapper.dto.bot.LinkUpdateRequest
+            trusted.packages: edu.java.scrapper.dto.bot
 server:
   port: 8080
 

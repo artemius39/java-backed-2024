@@ -1,6 +1,5 @@
-package edu.java.bot.service.processor.command;
+package edu.java.bot.service.command;
 
-import edu.java.bot.model.User;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -17,16 +16,13 @@ class HelpTest {
         when(command2.name()).thenReturn("/cmd2");
         when(command2.description()).thenReturn("desc2");
         Help help = new Help(List.of(command1, command2));
-        User user = new User();
-        user.setState(User.State.WAITING_FOR_COMMAND);
 
-        String response = help.process(user);
+        String response = help.process("/help", 0);
 
         assertThat(response).isEqualTo("""
                 Доступные команды:
                 /help -- список всех команд
                 /cmd1 -- desc1
                 /cmd2 -- desc2""");
-        assertThat(user.getState()).isEqualTo(User.State.WAITING_FOR_COMMAND);
     }
 }

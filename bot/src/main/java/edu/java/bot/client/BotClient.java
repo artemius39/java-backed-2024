@@ -23,8 +23,8 @@ public interface BotClient {
     ListLinksResponse listTrackedLinks(@RequestParam(name = "Tg-Chat-Id") long tgChatId);
 
     @PostExchange("/links")
-    LinkResponse addLink(@RequestBody AddLinkRequest request);
+    LinkResponse addLink(@RequestBody AddLinkRequest request, @RequestParam(name = "Tg-Chat-Id") long chatId);
 
     @DeleteMapping("/links")
-    LinkResponse removeLink(@RequestBody RemoveLinkRequest request);
+    LinkResponse removeLink(@RequestBody RemoveLinkRequest request, @RequestParam("Tg-Chat-Id") long chatId);
 }

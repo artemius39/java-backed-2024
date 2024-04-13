@@ -1,8 +1,8 @@
 package edu.java.scrapper.configuration;
 
-import edu.java.scrapper.client.ScrapperClient;
 import edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import edu.java.scrapper.repository.jpa.JpaUserRepository;
+import edu.java.scrapper.service.BotUpdateSender;
 import edu.java.scrapper.service.JpaLinkService;
 import edu.java.scrapper.service.JpaUpdater;
 import edu.java.scrapper.service.JpaUserService;
@@ -33,9 +33,9 @@ public class JpaAccessConfiguration {
         JpaLinkRepository linkRepository,
         JpaUserRepository userRepository,
         List<LinkUpdater> updaters,
-        ScrapperClient scrapperClient,
+        BotUpdateSender botUpdateSender,
         ApplicationConfig applicationConfig
     ) {
-        return new JpaUpdater(updaters, linkRepository, scrapperClient, applicationConfig, userRepository);
+        return new JpaUpdater(updaters, linkRepository, botUpdateSender, applicationConfig, userRepository);
     }
 }

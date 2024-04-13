@@ -1,5 +1,13 @@
 app:
   telegram-token: ${TELEGRAM_TOKEN}
+  dead-letter-queue-topic:
+    name: updates_dlq
+    replicas: 1
+    partitions: 1
+  updates-topic:
+    name: updates
+    replicas: 1
+    partitions: 1
 
 client:
   bot:
@@ -10,6 +18,16 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  kafka:
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      bootstrap-servers: localhost:9092
+      group-id: main
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: localhost:9092
 
 server:
   port: 8090

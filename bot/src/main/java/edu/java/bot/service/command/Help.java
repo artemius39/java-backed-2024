@@ -1,17 +1,16 @@
-package edu.java.bot.service.processor.command;
+package edu.java.bot.service.command;
 
-import edu.java.bot.model.User;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Help extends BaseCommand {
-    private final List<Command> otherCommands;
+public class Help implements Command {
+    private final List<Command> commands;
 
-    public Help(List<Command> otherCommands) {
-        this.otherCommands = otherCommands;
+    public Help(List<Command> commands) {
+        this.commands = commands;
     }
 
     @Override
@@ -25,9 +24,9 @@ public class Help extends BaseCommand {
     }
 
     @Override
-    protected String processImpl(User user) {
+    public String process(String message, long chatId) {
         return "Доступные команды:\n"
-               + Stream.concat(Stream.of(this), otherCommands.stream())
+               + Stream.concat(Stream.of(this), commands.stream())
                        .map(command -> command.name() + " -- " + command.description())
                        .collect(Collectors.joining("\n"));
     }
