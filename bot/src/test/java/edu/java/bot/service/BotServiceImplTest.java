@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.service.command.Command;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -34,7 +35,7 @@ class BotServiceImplTest {
         when(message.text())
             .thenReturn("/cmd1");
         TelegramBot bot = mock(TelegramBot.class);
-        BotService botService = new BotServiceImpl(List.of(command1, command2), bot);
+        BotService botService = new BotServiceImpl(List.of(command1, command2), bot, new SimpleMeterRegistry());
 
         botService.processMessage(update);
 
@@ -62,7 +63,7 @@ class BotServiceImplTest {
         when(message.text())
             .thenReturn("/cmd3");
         TelegramBot bot = mock(TelegramBot.class);
-        BotService botService = new BotServiceImpl(List.of(command1, command2), bot);
+        BotService botService = new BotServiceImpl(List.of(command1, command2), bot, new SimpleMeterRegistry());
 
         botService.processMessage(update);
 

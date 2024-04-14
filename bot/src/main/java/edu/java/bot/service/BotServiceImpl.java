@@ -6,6 +6,8 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.dto.request.LinkUpdateRequest;
 import edu.java.bot.service.command.Command;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -16,16 +18,18 @@ import org.springframework.stereotype.Service;
 public class BotServiceImpl implements BotService {
     private final Map<String, Command> commands;
     private final TelegramBot telegramBot;
+    private final Counter messageCounter;
 
-    public BotServiceImpl(List<Command> commandList, TelegramBot telegramBot
-    ) {
+    public BotServiceImpl(List<Command> commandList, TelegramBot telegramBot, MeterRegistry meterRegistry) {
         commands = commandList.stream()
                 .collect(Collectors.toMap(Command::name, Function.identity()));
+        messageCounter = meterRegistry.counter("messages_processed_count");
         this.telegramBot = telegramBot;
     }
 
     @Override
     public void processMessage(Update update) {
+        messageCounter.increment();
         Message message = update.message();
         Long chatId = message.chat().id();
         String messageText = message.text();
