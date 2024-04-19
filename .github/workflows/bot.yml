@@ -50,7 +50,7 @@ jobs:
           file: ./bot/bot.Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }
+          labels: ${{ steps.meta.outputs.labels }}
 
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
