@@ -11,6 +11,30 @@ app:
     partitions: 1
   use-queue: true
 
+management:
+  endpoint:
+    health:
+      enabled: true
+    info:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  server:
+    port: 8000
+  endpoints:
+    web:
+      base-path: ""
+      exposure:
+        include:
+          - info
+          - health
+          - prometheus
+      path-mapping:
+        prometheus: /metrics
+
 client:
   # noinspection SpringBootApplicationYaml
   clients:
